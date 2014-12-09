@@ -5,6 +5,18 @@ import re
 from commodity.os_ import SubProcess
 
 
+BLE_UUID_SUFFIX = "0000-1000-8000-00805f9b34fb"
+BLE_SERVICE_NAMES = {
+    "00001800": "Generic Access",
+    "00001801": "Generic Attribute",
+}
+
+BLE_FORMAT_TYPES = {
+    "00002800": "GATT Service",
+    "00002803": "GATT Characteristic",
+}
+
+
 def gatttool(addr, commands):
     cmd = "gatttool -b {0} {1}".format(addr, commands)
     p = SubProcess(cmd)
@@ -19,6 +31,20 @@ class BLEService(object):
         self.start = start
         self.end = end
 
+        self.name = "unknown"
+        if uuid[9:] == BLE_UUID_SUFFIX:
+            preffix = uuid[:8]
+            self.name = BLE_SERVICE_NAMES.get(
+                preffix, "unknown")
+
+        self.discover_chars()
+
+    def discover_chars(self):
+        start = int(self.start, 16)
+        for i in range(start, start + self.count):
+            handle = "0x{:x}".format(i)
+            print handle
+
     @property
     def count(self):
         start = int(self.start, 16)
@@ -26,11 +52,13 @@ class BLEService(object):
         return end - start
 
     def __repr__(self):
-        return ("<BLEService, uuid: {0},\n"
-                "  starting handle: {1},\n"
-                "  ending handle: {2},\n"
-                "  number of chars: {3}>"
-                .format(self.uuid, self.start, self.end,
+        return ("<BLEService, uuid: {},\n"
+                " - name: {},\n"
+                " - starting handle: {},\n"
+                " - ending handle: {},\n"
+                " - number of chars: {}>"
+                .format(self.uuid, self.name,
+                        self.start, self.end,
                         self.count))
 
 
@@ -45,7 +73,7 @@ class BLEDevice(object):
         for line in output.splitlines():
             s = self.parse_service(line)
             self.services.append(s)
-            print s
+            break
 
     def parse_service(self, info):
         e = ("attr handle = (?P<start_handle>.*), "
@@ -67,7 +95,6 @@ class BandDevice(object):
 
         self.device = BLEDevice(self.addr)
         self.device.discover_services()
-        print self.device
 
     @property
     def identifier(self):
