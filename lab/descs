@@ -60,16 +60,7 @@ handle = 0x0027, uuid = 0000ff0a-0000-1000-8000-00805f9b34fb -> value ###### ? #
  - read: (empty)
 handle = 0x0028, uuid = 00002803-0000-1000-8000-00805f9b34fb -> char handle
 handle = 0x0029, uuid = 0000ff0b-0000-1000-8000-00805f9b34fb -> value ###### ? ######
- - read: 1f 1b 11 11 d4 c6 00 00 11 a6 07 00 26 b1 be a8 96 58 46 00
- - read: 6b 1b 11 11 d4 c6 00 00 11 a6 07 00 28 b1 be a8 99 58 46 00
- - read: d6 1b 11 11 d4 c6 00 00 11 a6 07 00 2a b1 be a8 a1 58 46 00
- - read: 46 1c 11 11 d4 c6 00 00 11 a6 07 00 2c b1 be a8 a7 58 46 00
- - read: a6 1c 11 11 d4 c6 00 00 11 a6 07 00 2e b1 be a8 ac 58 46 00
- - read: fe 1c 11 11 d4 c6 00 00 11 a6 07 00 30 b1 be a8 af 58 46 00
- - read: e6 1d 11 11 d4 c6 00 00 ba b1 07 00 32 b1 be a8 b7 58 46 00
- - read: b4 1e 11 11 d4 c6 00 00 ba b1 07 00 34 b1 be a8 bb 58 46 00
- - read: 0a 1f 11 11 d4 c6 00 00 ba b1 07 00 36 b1 be a8 be 58 46 00
- - read: 84 1f 11 11 d4 c6 00 00 ba b1 07 00 39 b1 be a8 c5 58 46 00
+ - info: more on handle_0x29.txt
 handle = 0x002a, uuid = 00002803-0000-1000-8000-00805f9b34fb -> char handle
 handle = 0x002b, uuid = 0000ff0c-0000-1000-8000-00805f9b34fb -> value ###### ? ######
  - read: 56 0e 09 12 04 37 18 05 00 04
