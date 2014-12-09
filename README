@@ -1,0 +1,7 @@
+Description
+===========
+
+This is a Python package to access the (formerly Xiaomi) Mi Band. It
+uses the Bluetooth LE tools that are inside the Linux Bluetooth Stack
+(called bluez).
+
