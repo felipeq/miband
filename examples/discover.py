@@ -6,7 +6,7 @@ from mibanda import DiscoveryService
 
 
 ds = DiscoveryService()
-bands = ds.discover(2)
+bands = ds.discover(timeout=2)
 if not bands:
     print "No bands found!"
     sys.exit(-1)
