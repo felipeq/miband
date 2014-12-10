@@ -5,3 +5,10 @@ This is a Python package to access the (formerly Xiaomi) Mi Band. It
 uses the Bluetooth LE tools that are inside the Linux Bluetooth Stack
 (called bluez).
 
+References
+==========
+
+* http://forum.xda-developers.com/android/software/xiaomi-mi-bluetooth-le-band-protocol-t2963581
+* http://allmydroids.blogspot.de/2014/12/xiaomi-mi-band-ble-protocol-reverse.html
+
+
