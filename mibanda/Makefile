@@ -1,13 +1,16 @@
 # -*- mode: makefile-gmake; coding: utf-8 -*-
 
-TARGET   = services.so
+TARGETS  = services.so devices.so
 CFLAGS   = -ggdb -fPIC -Wall $$(python-config --includes)
 CXXFLAGS = $(CFLAGS)
 LDFLAGS  = -lboost_python -lbluetooth
 
-all: $(TARGET)
+all: $(TARGETS)
 
-$(TARGET): services.o
+services.so: services.o
+	$(CXX) $(CXXFLAGS) -shared -o $@ $^ $(LDFLAGS)
+
+devices.so: devices.o
 	$(CXX) $(CXXFLAGS) -shared -o $@ $^ $(LDFLAGS)
 
 .PHONY: clean
