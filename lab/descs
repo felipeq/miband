@@ -1,0 +1,131 @@
+-*- truncate-lines: true -*-
+
+Notes: big-endian used, ie: 02 00 -> 2
+
+handle = 0x0001, uuid = 00002800-0000-1000-8000-00805f9b34fb -> service handle
+handle = 0x0002, uuid = 00002803-0000-1000-8000-00805f9b34fb -> char handle
+handle = 0x0003, uuid = 00002a00-0000-1000-8000-00805f9b34fb -> value (Device Name, utf8s)
+handle = 0x0004, uuid = 00002803-0000-1000-8000-00805f9b34fb -> char handle
+handle = 0x0005, uuid = 00002a01-0000-1000-8000-00805f9b34fb -> value (Appearance, 16 bit, enumerated)
+handle = 0x0006, uuid = 00002803-0000-1000-8000-00805f9b34fb -> char handle
+handle = 0x0007, uuid = 00002a02-0000-1000-8000-00805f9b34fb -> value (Peripheral Privacy Flag, bool)
+handle = 0x0008, uuid = 00002803-0000-1000-8000-00805f9b34fb -> char handle
+handle = 0x0009, uuid = 00002a04-0000-1000-8000-00805f9b34fb -> value (Peripheral Preferred Connection Parameters)
+ - uint16: minimum connection interval
+ - uint16: maximum connection interval
+ - uint16: slave latency
+ - uint16: connection supervision timeout multiplier
+
+handle = 0x000c, uuid = 00002800-0000-1000-8000-00805f9b34fb -> service
+handle = 0x000d, uuid = 00002803-0000-1000-8000-00805f9b34fb -> char handle
+handle = 0x000e, uuid = 00002a05-0000-1000-8000-00805f9b34fb -> value (Service Changed)
+ - uint16: start of affected attribute handle range
+ - uint16: end of affected attribute handle range
+handle = 0x000f, uuid = 00002902-0000-1000-8000-00805f9b34fb -> value (Client Characteristic Configuration)
+ - notifications and indications to client
+
+handle = 0x0010, uuid = 00002800-0000-1000-8000-00805f9b34fb -> service
+handle = 0x0011, uuid = 00002803-0000-1000-8000-00805f9b34fb -> char handle
+handle = 0x0012, uuid = 0000ff01-0000-1000-8000-00805f9b34fb -> value (Device Info)
+ - read: 88 10 73 da 00 00 02 62 00 06 00 02 09 04 00 01
+handle = 0x0013, uuid = 00002803-0000-1000-8000-00805f9b34fb -> char handle
+handle = 0x0014, uuid = 0000ff02-0000-1000-8000-00805f9b34fb -> value (Device Name)
+ - read: 4d 49 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+ - string: "MI"
+handle = 0x0015, uuid = 00002803-0000-1000-8000-00805f9b34fb -> char handle
+handle = 0x0016, uuid = 0000ff03-0000-1000-8000-00805f9b34fb -> value (Notification)
+ - read: (empty)
+handle = 0x0017, uuid = 00002902-0000-1000-8000-00805f9b34fb -> Client Characteristic Configuration
+handle = 0x0018, uuid = 00002803-0000-1000-8000-00805f9b34fb -> char handle
+handle = 0x0019, uuid = 0000ff04-0000-1000-8000-00805f9b34fb -> value (User Info)
+ - read: (empty)
+handle = 0x001a, uuid = 00002803-0000-1000-8000-00805f9b34fb -> char handle
+handle = 0x001b, uuid = 0000ff05-0000-1000-8000-00805f9b34fb -> value (Control Point)
+ - read: (failed, attribute can't be read)
+ - write: 3 1 -> enable realtime step notification
+ - write: 3 0 -> disable realtime step notification
+ - write: 18 1 -> enable sensor data notification
+ - write: 18 0 -> disable sensor data notification
+ - write: 9 -> factory reset
+ - write: 21 -> reboot
+ - write: 19 -> stop motor vibration
+ - write: 11 -> sync
+handle = 0x001c, uuid = 00002803-0000-1000-8000-00805f9b34fb -> char handle
+handle = 0x001d, uuid = 0000ff06-0000-1000-8000-00805f9b34fb -> value (Realtime Steps)
+ - read: 00 12 
+ - integer: (0x12 << 8) + 00 -> 4608
+handle = 0x001e, uuid = 00002902-0000-1000-8000-00805f9b34fb -> Client Characteristic Configuration
+handle = 0x001f, uuid = 00002803-0000-1000-8000-00805f9b34fb -> char handle
+handle = 0x0020, uuid = 0000ff07-0000-1000-8000-00805f9b34fb -> value (Activity Data)
+ - read: 01 0e 0b 07 16 27 1f a5 00 00 00
+handle = 0x0021, uuid = 00002902-0000-1000-8000-00805f9b34fb -> Client Characteristic Configuration
+handle = 0x0022, uuid = 00002803-0000-1000-8000-00805f9b34fb -> char handle
+handle = 0x0023, uuid = 0000ff08-0000-1000-8000-00805f9b34fb -> value (Firmware Data)
+ - read: (failed, attribute can't be read)
+handle = 0x0024, uuid = 00002803-0000-1000-8000-00805f9b34fb -> char handle
+handle = 0x0025, uuid = 0000ff09-0000-1000-8000-00805f9b34fb -> value (LE Params)
+ - read: cc 01 f4 01 00 00 2a 00 38 00 60 09
+ - info: 12 bytes
+   - connIntMin: cc | 01 << 8	
+   - connIntMax: f4 | 01 << 8
+   - latency:    00 | 00 << 8
+   - timeout:    2a | 00 << 8
+   - connInt:    38 | 00 << 8
+   - advInt:     60 | 09 << 8
+handle = 0x0026, uuid = 00002803-0000-1000-8000-00805f9b34fb -> char handle
+handle = 0x0027, uuid = 0000ff0a-0000-1000-8000-00805f9b34fb -> value (Date Time)
+ - read: (empty)
+handle = 0x0028, uuid = 00002803-0000-1000-8000-00805f9b34fb -> char handle
+handle = 0x0029, uuid = 0000ff0b-0000-1000-8000-00805f9b34fb -> value (Statistics)
+ - info: more on handle_0x29.txt
+handle = 0x002a, uuid = 00002803-0000-1000-8000-00805f9b34fb -> char handle
+handle = 0x002b, uuid = 0000ff0c-0000-1000-8000-00805f9b34fb -> value (Battery)
+ - read: 56 0e 09 12 04 37 18 05 00 04
+ - info: 
+   - level:  0x56 %
+   - year:   0x0e + 2000
+   - month:  09
+   - day:    12
+   - hour:   04
+   - minute: 37
+   - second: 18
+   - charges count: 05 | 00 << 8 (5 times)
+   - status: 04 (1 -> low, 2 -> med, 3 -> full, 4 -> not charging)
+handle = 0x002c, uuid = 00002902-0000-1000-8000-00805f9b34fb -> Client Characteristic Configuration
+handle = 0x002d, uuid = 00002803-0000-1000-8000-00805f9b34fb -> char handle
+handle = 0x002e, uuid = 0000ff0d-0000-1000-8000-00805f9b34fb -> value (Test)
+ - read: 05 00
+ - write: 1 -> remote disconnect
+ - write: 2 -> self test
+handle = 0x002f, uuid = 00002803-0000-1000-8000-00805f9b34fb -> char handle
+handle = 0x0030, uuid = 0000ff0e-0000-1000-8000-00805f9b34fb -> value (Sensor Data)
+ - read: 6c 00 ee 3c 5c 41 5c 82 e7 3c 7b 41 56 82 e9 3c 67 41 54 82
+handle = 0x0031, uuid = 00002902-0000-1000-8000-00805f9b34fb -> Client Characteristic Configuration
+handle = 0x0032, uuid = 00002803-0000-1000-8000-00805f9b34fb -> char handle
+handle = 0x0033, uuid = 0000ff0f-0000-1000-8000-00805f9b34fb -> value (Pair)
+ - read: ff ff -> not paired
+ - read: 2     -> paired
+ - write: 2 -> pair (need encryption)
+
+handle = 0x0034, uuid = 00002800-0000-1000-8000-00805f9b34fb -> service
+handle = 0x0035, uuid = 00002803-0000-1000-8000-00805f9b34fb -> char handle
+handle = 0x0036, uuid = 0000fedd-0000-1000-8000-00805f9b34fb -> value ###### ? ######
+ - read: (empty) 
+handle = 0x0037, uuid = 00002803-0000-1000-8000-00805f9b34fb -> char handle
+handle = 0x0038, uuid = 0000fede-0000-1000-8000-00805f9b34fb -> value ###### ? ######
+ - read: (empty)
+handle = 0x0039, uuid = 00002803-0000-1000-8000-00805f9b34fb -> char handle
+handle = 0x003a, uuid = 0000fedf-0000-1000-8000-00805f9b34fb -> value ###### ? ######
+ - read: 01
+
+handle = 0x003b, uuid = 00002800-0000-1000-8000-00805f9b34fb -> service
+handle = 0x003c, uuid = 00002803-0000-1000-8000-00805f9b34fb -> char handle
+handle = 0x003d, uuid = 0000fec7-0000-1000-8000-00805f9b34fb -> value ###### ? ######
+ - read: (empty)
+handle = 0x003e, uuid = 00002803-0000-1000-8000-00805f9b34fb -> char handle
+handle = 0x003f, uuid = 0000fec8-0000-1000-8000-00805f9b34fb -> value ###### ? ######
+ - read: (empty)
+handle = 0x0040, uuid = 00002902-0000-1000-8000-00805f9b34fb -> Client Characteristic Configuration
+handle = 0x0041, uuid = 00002803-0000-1000-8000-00805f9b34fb -> char handle
+handle = 0x0042, uuid = 0000fec9-0000-1000-8000-00805f9b34fb -> value ###### ? ######
+ - read: 88 0f 10 10 73 da

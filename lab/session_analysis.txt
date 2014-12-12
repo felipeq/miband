@@ -1,0 +1,37 @@
+- DEVICE MAC: 88:0F:10:10:73:DA
+- HOST MAC:   C4:85:08:42:3D:F2
+
+- write 0100 to custom "Client Characteristic Configuration": 0x00{17, 1e, 21, 2c, 31}
+
+- write   0x0019 -> 7e de 4e 5c 01 1e bd 4e 00 31 35 34 38 36 37 32 36 33 38 f3 
+    - register properties: 0x0a -> b1010
+
+- notify  0x0016 -> 05
+- write   0x0027 -> 0e 0b 05 15 0d 33 ff ff ff ff ff ff 
+- read    0x0027 -> 0e 0b 05 15 0d 33 0e 0b 05 15 0e 1b
+- read    0x002b -> 5d 0e 09 12 04 37 18 05 00 04
+- read    0x0012 -> 88 10 73 da 00 00 02 62 00 06 00 02 09 04 00 01
+- write   0x001b -> 06
+- notify  0x0020 -> 01 0e 0b 04 13 0a 17 1c 06 1c 06
+                 -> 00 23 00 00 2d 00 00 13 00 00 65 0d 00 28 00 00 07 00 00 0f
+		 -> 00 00 4f 0b 01 57 10 01 5a 22 00 45 0b 01 43 14 21 9e 56 01
+		 ...
+
+- read    0x001d -> 75 10
+- write   0x001b -> 03 01
+- notify  0x0020 -> 00 00 29 0b 00 18 00 00 1e 00 00 25 00 00 2c 00 00 4e 0d 00
+                 ...
+
+- read    0x0025 -> cc 01 f4 01 00 00 bc 02 27 00 60 09
+- read    0x0025 -> cc 01 f4 01 00 00 bc 02 27 00 60 09
+
+- write   0x001b -> 0a 0e 0b 04 13 0a 17 1c 06
+- write   0x001b -> 0a 0e 0b 05 15 0e 17 00 00
+- read    0x0029 -> 56 fa b0 10 42 27 00 00 f1 1f 03 00 b3 8d be a8 73 41 41 00
+- read    0x002b -> 5d 0e 09 12 04 37 18 05 00 04
+- read    0x002b -> 5d 0e 09 12 04 37 18 05 00 04
+- write   0x001b -> 03 00
+
+END OF SESSION
+
+---- pgk 506 ----
