@@ -20,6 +20,11 @@ BandDevice::getAddress() {
 	return _address;
 }
 
+void
+BandDevice::getBatteryInfo() {
+	std::cout << "work in progress..." << std::endl;
+}
+
 
 using namespace boost::python;
 
@@ -39,5 +44,6 @@ BOOST_PYTHON_MODULE(devices) {
 	class_<BandDevice>("BandDevice", init<std::string, std::string>())
 		.def("getName", &BandDevice::getName)
 		.def("getAddress", &BandDevice::getAddress)
+		.def("getBatteryInfo", &BandDevice::getBatteryInfo)
 	;
 }

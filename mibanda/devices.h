@@ -11,6 +11,8 @@ public:
     std::string getName();
     std::string getAddress();
 
+	void getBatteryInfo();
+
 private:
     std::string _address;
     std::string _name;

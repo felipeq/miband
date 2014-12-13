@@ -12,3 +12,5 @@ b = BandDevice(sys.argv[1], sys.argv[2])
 
 print "NAME:", b.getName()
 print "ADDRESS:", b.getAddress()
+
+b.getBatteryInfo()
