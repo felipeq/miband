@@ -7,7 +7,7 @@ LDFLAGS  = -lboost_python -lbluetooth
 
 all: $(TARGETS)
 
-services.so: services.o
+services.so: services.o devices.o
 	$(CXX) $(CXXFLAGS) -shared -o $@ $^ $(LDFLAGS)
 
 devices.so: devices.o

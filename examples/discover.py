@@ -5,11 +5,11 @@ import sys
 from mibanda import DiscoveryService
 
 
-ds = DiscoveryService()
-bands = ds.discover(timeout=2)
+ds = DiscoveryService("hci0", 1)
+bands = ds.discover()
 if not bands:
     print "No bands found!"
     sys.exit(-1)
 
 for band in bands:
-    print "Band found, called '{0}'".format(band.name)
+    print "Band found, called '{0}'".format(band.getName())

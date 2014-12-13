@@ -8,6 +8,8 @@
 #include <exception>
 #include <map>
 
+#include "devices.h"
+
 #define EIR_NAME_SHORT     0x08  /* shortened local name */
 #define EIR_NAME_COMPLETE  0x09  /* complete local name */
 
@@ -161,10 +163,17 @@ public:
 			throw std::runtime_error("Disable scan failed");
 	}
 
-	void discover() {
+	BandDeviceList discover() {
 		enable_scan_mode();
 		StringDict devices = get_advertisements();
 		disable_scan_mode();
+
+		BandDeviceList retval;
+		for (StringDict::iterator i=devices.begin(); i!=devices.end(); i++) {
+			retval.push_back(BandDevice(i->first, i->second));
+		}
+
+		return retval;
 	}
 
 private:
@@ -179,5 +188,5 @@ BOOST_PYTHON_MODULE(services) {
 	class_<DiscoveryService>("DiscoveryService",
 							 init<std::string, int>())
 		.def("discover", &DiscoveryService::discover)
-		;
+	;
 }
