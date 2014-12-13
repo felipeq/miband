@@ -1,14 +1,39 @@
 Description
 ===========
 
-This is a Python package to access the (formerly Xiaomi) Mi Band. It
-uses the Bluetooth LE tools that are inside the Linux Bluetooth Stack
-(called bluez).
+This is a library to access the Xiaomi Mi Band. It is written in C++,
+along with some bindings for Python.
+
+Compiling
+=========
+
+First, assure that you have the needed depends. The file called
+DEPENDS shows what you need. If you use Debian or derivatives (like
+Ubuntu), and want to install everyting in one step, just do the
+following:
+
+    miband$ sudo apt-get install $(cat DEPENDS)
+
+After that, you can compile it with:
+
+    miband$ make
+
+Using it
+========
+
+First, make sure that your Python binary could find the miband
+package. If you installed the Debian package, don't worry. Otherwise,
+set the PYTHONPATH to the proper location (i.e: this repo root
+dir). You can do so by:
+
+    miband$ . setenv.sh
+
+Now, just import the module `mibanda`, and use it according to the API
+documentation, or as in the examples.
 
 References
 ==========
 
 * http://forum.xda-developers.com/android/software/xiaomi-mi-bluetooth-le-band-protocol-t2963581
 * http://allmydroids.blogspot.de/2014/12/xiaomi-mi-band-ble-protocol-reverse.html
-
-
+* https://github.com/KashaMalaga/XiaomiMiBand

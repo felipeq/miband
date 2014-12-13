@@ -144,7 +144,7 @@ public:
 				char name[name_len + 1];
 				memcpy(name, data + 2, name_len);
 				name[name_len] = 0;
-				return std::string(name);
+				return name;
 			}
 
 			offset += field_len + 1;
