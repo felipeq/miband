@@ -170,7 +170,8 @@ public:
 
 		BandDeviceList retval;
 		for (StringDict::iterator i=devices.begin(); i!=devices.end(); i++) {
-			retval.push_back(BandDevice(i->first, i->second));
+			BandDevicePtr dev = BandDevicePtr(new BandDevice(i->first, i->second));
+			retval.push_back(dev);
 		}
 
 		return retval;

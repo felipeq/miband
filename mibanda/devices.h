@@ -11,13 +11,12 @@ public:
     std::string getName();
     std::string getAddress();
 
-    bool operator==(const BandDevice& other);
-
 private:
     std::string _address;
     std::string _name;
 };
 
-typedef std::vector<BandDevice> BandDeviceList;
+typedef boost::shared_ptr<BandDevice> BandDevicePtr;
+typedef std::vector<BandDevicePtr> BandDeviceList;
 
 #endif // _MIBANDA_DEVICES_H_

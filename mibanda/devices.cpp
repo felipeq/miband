@@ -20,18 +20,21 @@ BandDevice::getAddress() {
 	return _address;
 }
 
-bool
-BandDevice::operator==(const BandDevice& other) {
-	return _name == other._name and
-		_address == other._address;
-}
 
 using namespace boost::python;
+
+template < class T >
+void classList(std::string name) {
+    class_< T >(name.c_str(), no_init)
+	.def("__iter__", iterator< T >())
+	.def("__len__", &T::size)
+    ;
+}
+
 BOOST_PYTHON_MODULE(devices) {
 
-	class_<BandDeviceList>("BandDeviceList")
-        .def(vector_indexing_suite<BandDeviceList>() )
-	;
+	classList<BandDeviceList>("BandDeviceList");
+	register_ptr_to_python<BandDevicePtr>();
 
 	class_<BandDevice>("BandDevice", init<std::string, std::string>())
 		.def("getName", &BandDevice::getName)
