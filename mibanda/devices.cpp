@@ -7,7 +7,8 @@
 
 BandDevice::BandDevice(std::string address, std::string name) :
 	_address(address),
-	_name(name) {
+	_name(name),
+	_gatt(address) {
 }
 
 std::string
@@ -22,7 +23,13 @@ BandDevice::getAddress() {
 
 void
 BandDevice::getBatteryInfo() {
-	std::cout << "work in progress..." << std::endl;
+	GATTResponse response;
+	_gatt.read_by_handler(HANDLER_BATTERY, response);
+
+	if (not response.wait(5))
+		throw std::runtime_error("Devices is not responding!");
+
+	std::cout << "DATA:" << response.received() << std::endl;
 }
 
 
@@ -31,8 +38,8 @@ using namespace boost::python;
 template < class T >
 void classList(std::string name) {
     class_< T >(name.c_str(), no_init)
-	.def("__iter__", iterator< T >())
-	.def("__len__", &T::size)
+		.def("__iter__", iterator< T >())
+		.def("__len__", &T::size)
     ;
 }
 

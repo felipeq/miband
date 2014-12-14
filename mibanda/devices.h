@@ -3,6 +3,9 @@
 #ifndef _MIBANDA_DEVICES_H_
 #define _MIBANDA_DEVICES_H_
 
+#define HANDLER_BATTERY 0x002b
+
+#include "gattlib.h"
 #include <vector>
 
 class BandDevice {
@@ -16,6 +19,7 @@ public:
 private:
     std::string _address;
     std::string _name;
+	GATTRequester _gatt;
 };
 
 typedef boost::shared_ptr<BandDevice> BandDevicePtr;
