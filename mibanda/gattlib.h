@@ -6,49 +6,13 @@
 #include <string>
 #include <stdint.h>
 
-#include <boost/thread/mutex.hpp>
-
-//
-// FIXME: only a mutex is not valid, you need a condition variable
-//
-
-class Event {
-public:
-	Event() : _flag(false) {
-	}
-
-	void set() {
-		_flag = true;
-		_mutex.unlock();
-	}
-
-	void clear() {
-		_flag = false;
-	}
-
-	bool wait(uint16_t timeout) {
-		if (_flag)
-			return _flag;
-
-		if (timeout > 0)
-			_mutex.timed_lock(timeout);
-		else if (timeout == 0)
-			_mutex.try_lock();
-		else
-			_mutex.lock();
-
-		return _flag;
-	}
-
-private:
-	bool _flag;
-	boost::timed_mutex _mutex;
-};
+#include "event.hpp"
 
 class GATTResponse {
 public:
 
 	GATTResponse();
+	void notify(uint8_t status, std::string data);
 	bool wait(uint16_t timeout);
 	std::string received();
 
@@ -62,7 +26,7 @@ class GATTRequester {
 public:
 
 	GATTRequester(std::string address);
-	void read_by_handler(uint16_t handle, GATTResponse& response);
+	void read_by_handler(uint16_t handle, GATTResponse* response);
 
 private:
 	std::string _address;

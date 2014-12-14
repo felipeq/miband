@@ -1,7 +1,11 @@
 // -*- mode: c++; coding: utf-8; tab-width: 4 -*-
 
 #include <iostream>
+#include <glib.h>
+
 #include "gattlib.h"
+#include "lib/uuid.h"
+#include "attrib/att.h"
 
 GATTResponse::GATTResponse() {
 }
@@ -17,12 +21,12 @@ GATTResponse::notify(uint8_t status, std::string data) {
 bool
 GATTResponse::wait(uint16_t timeout) {
     if (not _event.wait(timeout))
-	return false;
+		return false;
 
     if (_status != 0) {
-	std::string msg = "Characteristic value/descriptor read failed:";
-	msg += att_ecode2str(_status);
-	throw std::runtime_error(msg);
+		std::string msg = "Characteristic value/descriptor read failed: ";
+		msg += att_ecode2str(_status);
+		throw std::runtime_error(msg);
     }
 
     return true;
@@ -39,9 +43,10 @@ GATTRequester::GATTRequester(std::string address) :
 }
 
 static void
-_read_by_handler_cb(guint8 status, const guint8* data, guint16 size, gpointer userp) {
+_read_by_handler_cb(guint8 status, const guint8* data,
+					guint16 size, gpointer userp) {
     GATTResponse* response = (GATTResponse*)userp;
-    response->notify(status, std::string(data, size));
+    response->notify(status, std::string((const char*)data, size));
 }
 
 void

@@ -2,9 +2,12 @@
 
 TARGETS  = services.so devices.so
 OBJECTS  = devices.o gattlib.o
-CFLAGS   = -ggdb -fPIC -Wall $$(python-config --includes)
+
+CFLAGS  += -ggdb -fPIC -Wall $$(python-config --includes) \
+	   -Ibluez $$(pkg-config --cflags glib-2.0)
 CXXFLAGS = $(CFLAGS)
-LDFLAGS  = -lboost_python -lbluetooth
+LDFLAGS  = -lboost_python -lbluetooth \
+	   $$(pkg-config --libs glib-2.0)
 
 all: $(TARGETS)
 

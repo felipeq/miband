@@ -1,2 +1,4 @@
+pkg-config
 libboost-python-dev
 libbluetooth-dev
+libglib2.0-dev

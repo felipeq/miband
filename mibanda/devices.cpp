@@ -24,7 +24,7 @@ BandDevice::getAddress() {
 void
 BandDevice::getBatteryInfo() {
 	GATTResponse response;
-	_gatt.read_by_handler(HANDLER_BATTERY, response);
+	_gatt.read_by_handler(HANDLER_BATTERY, &response);
 
 	if (not response.wait(5))
 		throw std::runtime_error("Devices is not responding!");
