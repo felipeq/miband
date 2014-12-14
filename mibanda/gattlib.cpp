@@ -4,8 +4,13 @@
 #include <glib.h>
 
 #include "gattlib.h"
+
+extern "C" {
 #include "lib/uuid.h"
 #include "attrib/att.h"
+#include "attrib/gattrib.h"
+#include "attrib/gatt.h"
+}
 
 GATTResponse::GATTResponse() {
 }
@@ -52,6 +57,6 @@ _read_by_handler_cb(guint8 status, const guint8* data,
 void
 GATTRequester::read_by_handler(uint16_t handle, GATTResponse* response) {
 
-    // GAttrib *attrib = user_data;
-    // gatt_read_char(attrib, handle, _read_by_handler_cb, (gpointer)response);
+    GAttrib *attrib;
+	gatt_read_char(attrib, handle, _read_by_handler_cb, (gpointer)response);
 }
