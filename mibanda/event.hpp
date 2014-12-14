@@ -27,15 +27,16 @@ public:
 	    return _flag;
 
 	boost::unique_lock<boost::mutex> lock(_mutex);
-	if (timeout < 0) {
+	if (timeout >= 0) {
 	    boost::system_time const ts =
 		boost::get_system_time() +
 		boost::posix_time::milliseconds(timeout * 1000);
 	    _cond.timed_wait(lock, ts);
 	}
-	else
+	else {
 	    while (!_flag)
 		_cond.wait(lock);
+	}
 
 	return _flag;
     }
