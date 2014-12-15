@@ -9,6 +9,7 @@
 #include <map>
 
 #include "devices.h"
+#include "gattlib.h"
 
 #define EIR_NAME_SHORT     0x08  /* shortened local name */
 #define EIR_NAME_COMPLETE  0x09  /* complete local name */
@@ -189,5 +190,9 @@ BOOST_PYTHON_MODULE(services) {
 	class_<DiscoveryService>("DiscoveryService",
 							 init<std::string, int>())
 		.def("discover", &DiscoveryService::discover)
+	;
+
+	class_<IOService>("IOService")
+		.def("start", &IOService::start)
 	;
 }

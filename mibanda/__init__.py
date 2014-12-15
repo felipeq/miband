@@ -3,5 +3,6 @@
 from services import DiscoveryService
 from devices import BandDevice
 
-# from services import IOSerice
+# NOTE: call this only once!
+from services import IOService
 # IOService().start()

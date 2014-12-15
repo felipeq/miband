@@ -2,11 +2,11 @@
 
 TARGETS  = services.so devices.so
 OBJECTS  = devices.o gattlib.o att.o crypto.o uuid.o gatt.o gattrib.o \
-	   btio.o log.o
+	   btio.o log.o utils.o
 
 CFLAGS  += -ggdb -fPIC -Wall $$(python-config --includes) \
 	   -Ibluez $$(pkg-config --cflags glib-2.0)
-CFLAGS  += -DVERSION='5.25'
+CFLAGS  += -DVERSION='"5.25"'
 CXXFLAGS = $(CFLAGS)
 LDFLAGS  = -lboost_python -lboost_thread -lbluetooth \
 	   $$(pkg-config --libs glib-2.0)

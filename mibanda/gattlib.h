@@ -5,13 +5,19 @@
 
 #include <string>
 #include <stdint.h>
+#include <glib.h>
 
 #include "event.hpp"
+
+class IOService {
+public:
+	void start();
+	void operator()();
+};
 
 class GATTResponse {
 public:
 
-	GATTResponse();
 	void notify(uint8_t status, std::string data);
 	bool wait(uint16_t timeout);
 	std::string received();
@@ -26,10 +32,12 @@ class GATTRequester {
 public:
 
 	GATTRequester(std::string address);
+	~GATTRequester();
 	void read_by_handler(uint16_t handle, GATTResponse* response);
 
 private:
 	std::string _address;
+	GIOChannel* _channel;
 };
 
 #endif // _MIBANDA_GATTLIB_H_

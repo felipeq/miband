@@ -4,6 +4,7 @@
 #include <boost/python/suite/indexing/vector_indexing_suite.hpp>
 
 #include "devices.h"
+#include "debug.h"
 
 BandDevice::BandDevice(std::string address, std::string name) :
 	_address(address),
@@ -27,13 +28,13 @@ BandDevice::getBatteryInfo() {
 	_gatt.read_by_handler(HANDLER_BATTERY, &response);
 
 	if (not response.wait(5))
-		// FIXME: now, response is deleted, but is still registered on 
+		// FIXME: now, response is deleted, but is still registered on
 		// GLIB as callback!!
 		throw std::runtime_error("Devices is not responding!");
 
-	std::cout << "DATA:" << response.received() << std::endl;
+	std::string data = response.received();
+	hexdump(data);
 }
-
 
 using namespace boost::python;
 
