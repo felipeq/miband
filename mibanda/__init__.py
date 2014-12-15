@@ -5,4 +5,4 @@ from devices import BandDevice
 
 # NOTE: call this only once!
 from services import IOService
-# IOService().start()
+IOService().start()

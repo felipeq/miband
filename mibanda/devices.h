@@ -8,13 +8,31 @@
 #include "gattlib.h"
 #include <vector>
 
+class BatteryInfo {
+public:
+	BatteryInfo(std::string data);
+
+	uint8_t level;
+	tm last_charged;
+	uint16_t charge_counter;
+
+	typedef enum {
+		low = 1,
+		medium = 2,
+		full = 3,
+		notCharging = 4,
+	} BatteryStatus;
+
+	BatteryStatus status;
+};
+
 class BandDevice {
 public:
     BandDevice(std::string address, std::string name);
     std::string getName();
     std::string getAddress();
 
-	void getBatteryInfo();
+	BatteryInfo getBatteryInfo();
 
 private:
     std::string _address;

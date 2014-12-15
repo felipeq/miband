@@ -17,7 +17,6 @@ public:
 
 class GATTResponse {
 public:
-
 	void notify(uint8_t status, std::string data);
 	bool wait(uint16_t timeout);
 	std::string received();
@@ -28,12 +27,15 @@ private:
 	Event _event;
 };
 
+void connect_cb(GIOChannel* channel, GError* err, gpointer user_data);
+
 class GATTRequester {
 public:
-
 	GATTRequester(std::string address);
 	~GATTRequester();
 	void read_by_handler(uint16_t handle, GATTResponse* response);
+
+	friend void connect_cb(GIOChannel*, GError*, gpointer);
 
 private:
 	std::string _address;

@@ -40,9 +40,9 @@
 #include "utils.h"
 
 GIOChannel *gatt_connect(const char *src, const char *dst,
-				const char *dst_type, const char *sec_level,
-				int psm, int mtu, BtIOConnect connect_cb,
-				GError **gerr)
+			 const char *dst_type, const char *sec_level,
+			 int psm, int mtu, BtIOConnect connect_cb,
+			 GError **gerr, gpointer user_data)
 {
 	GIOChannel *chan;
 	bdaddr_t sba, dba;
@@ -75,7 +75,7 @@ GIOChannel *gatt_connect(const char *src, const char *dst,
 		sec = BT_IO_SEC_LOW;
 
 	if (psm == 0)
-		chan = bt_io_connect(connect_cb, NULL, NULL, &tmp_err,
+		chan = bt_io_connect(connect_cb, user_data, NULL, &tmp_err,
 				BT_IO_OPT_SOURCE_BDADDR, &sba,
 				BT_IO_OPT_SOURCE_TYPE, BDADDR_LE_PUBLIC,
 				BT_IO_OPT_DEST_BDADDR, &dba,
@@ -84,7 +84,7 @@ GIOChannel *gatt_connect(const char *src, const char *dst,
 				BT_IO_OPT_SEC_LEVEL, sec,
 				BT_IO_OPT_INVALID);
 	else
-		chan = bt_io_connect(connect_cb, NULL, NULL, &tmp_err,
+		chan = bt_io_connect(connect_cb, user_data, NULL, &tmp_err,
 				BT_IO_OPT_SOURCE_BDADDR, &sba,
 				BT_IO_OPT_DEST_BDADDR, &dba,
 				BT_IO_OPT_PSM, psm,

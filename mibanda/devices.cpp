@@ -2,9 +2,16 @@
 
 #include <boost/python.hpp>
 #include <boost/python/suite/indexing/vector_indexing_suite.hpp>
+#include <datetime.h>
 
 #include "devices.h"
-#include "debug.h"
+
+BatteryInfo::BatteryInfo(std::string data) :
+	level(255),
+	last_charged(),
+	charge_counter(-1),
+	status(notCharging) {
+}
 
 BandDevice::BandDevice(std::string address, std::string name) :
 	_address(address),
@@ -22,7 +29,7 @@ BandDevice::getAddress() {
 	return _address;
 }
 
-void
+BatteryInfo
 BandDevice::getBatteryInfo() {
 	GATTResponse response;
 	_gatt.read_by_handler(HANDLER_BATTERY, &response);
@@ -32,8 +39,7 @@ BandDevice::getBatteryInfo() {
 		// GLIB as callback!!
 		throw std::runtime_error("Devices is not responding!");
 
-	std::string data = response.received();
-	hexdump(data);
+	return BatteryInfo(response.received());
 }
 
 using namespace boost::python;
@@ -46,14 +52,31 @@ void classList(std::string name) {
     ;
 }
 
+struct ctime_tm_to_datetime {
+	static PyObject* convert(const tm t) {
+		return PyDateTime_FromDateAndTime
+			(t.tm_year, t.tm_mon, t.tm_mday,
+			 t.tm_hour, t.tm_min, t.tm_sec, 0);
+	}
+};
+
 BOOST_PYTHON_MODULE(devices) {
 
 	classList<BandDeviceList>("BandDeviceList");
 	register_ptr_to_python<BandDevicePtr>();
 
+    to_python_converter<tm, ctime_tm_to_datetime>();
+
 	class_<BandDevice>("BandDevice", init<std::string, std::string>())
 		.def("getName", &BandDevice::getName)
 		.def("getAddress", &BandDevice::getAddress)
 		.def("getBatteryInfo", &BandDevice::getBatteryInfo)
+	;
+
+	class_<BatteryInfo>("BatteryInfo", init<std::string>())
+		.def_readonly("level", &BatteryInfo::level)
+		.def_readonly("last_charged", &BatteryInfo::last_charged)
+		.def_readonly("charge_counter", &BatteryInfo::charge_counter)
+		.def_readonly("status", &BatteryInfo::status)
 	;
 }

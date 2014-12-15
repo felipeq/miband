@@ -51,15 +51,19 @@ GATTResponse::received() {
     return _data;
 }
 
-static void
-connect_cb(GIOChannel *io, GError *err, gpointer user_data) {
+void
+connect_cb(GIOChannel* channel, GError* err, gpointer user_data) {
 	if (err) {
 		throw std::runtime_error(err->message);
 	}
+
+	GATTRequester* request = (GATTRequester*)user_data;
+	request->_channel = channel;
 }
 
 GATTRequester::GATTRequester(std::string address) :
-    _address(address) {
+    _address(address),
+	_channel(NULL) {
 
 	GError *gerr = NULL;
 	_channel = gatt_connect
@@ -70,7 +74,8 @@ GATTRequester::GATTRequester(std::string address) :
 		 0,                // 0, int
 		 0,                // 0, mtu
 		 connect_cb,
-		 &gerr);
+		 &gerr,
+		 (gpointer)this);
 
 	if (_channel == NULL) {
 	 	g_error_free(gerr);
@@ -114,6 +119,14 @@ GATTRequester::read_by_handler(uint16_t handle, GATTResponse* response) {
 
 	if (cid == ATT_CID)
 	 	mtu = ATT_DEFAULT_LE_MTU;
+
+	// Allow channel to be properly created
+	time_t ts = time(NULL);
+	while (_channel == NULL) {
+		usleep(10000);
+		if (time(NULL) - ts > 5)
+			throw std::runtime_error("");
+	}
 
 	GAttrib* attrib = g_attrib_new(_channel, mtu);
 	gatt_read_char(attrib, handle, _read_by_handler_cb, (gpointer)response);
