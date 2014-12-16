@@ -5,7 +5,6 @@
 
 #include <boost/python.hpp>
 #include <boost/python/suite/indexing/vector_indexing_suite.hpp>
-#include <datetime.h>
 
 #include "devices.h"
 
@@ -13,7 +12,23 @@ BatteryInfo::BatteryInfo(std::string data) :
 	level(255),
 	last_charged(),
 	charge_counter(-1),
-	status(notCharging) {
+	status("unknown") {
+
+	level = (int)data[0];
+	last_charged.year = (int)data[1] + 2000;
+	last_charged.month = (int)data[2];
+	last_charged.day = (int)data[3];
+	last_charged.hour = (int)data[4];
+	last_charged.minute = (int)data[5];
+	last_charged.second = (int)data[6];
+	charge_counter = (int)data[7] + ((int)data[8] << 8);
+
+	switch(data[9]) {
+	case 1: status = "low"; break;
+	case 2: status = "medium"; break;
+	case 3: status = "full"; break;
+	case 4: status = "not charging"; break;
+	}
 }
 
 BandDevice::BandDevice(std::string address, std::string name) :
@@ -55,26 +70,25 @@ void classList(std::string name) {
     ;
 }
 
-struct ctime_tm_to_datetime {
-	static PyObject* convert(const tm t) {
-		return PyDateTime_FromDateAndTime
-			(t.tm_year, t.tm_mon, t.tm_mday,
-			 t.tm_hour, t.tm_min, t.tm_sec, 0);
-	}
-};
-
 BOOST_PYTHON_MODULE(devices) {
 
 	classList<BandDeviceList>("BandDeviceList");
 	register_ptr_to_python<BandDevicePtr>();
-
-    to_python_converter<tm, ctime_tm_to_datetime>();
 
 	class_<BandDevice>("BandDevice", init<std::string, std::string>())
 		.def("getName", &BandDevice::getName)
 		.def("getAddress", &BandDevice::getAddress)
 		.def("getBatteryInfo", &BandDevice::getBatteryInfo)
 	;
+
+	class_<DateTime>("DateTime")
+		.def_readonly("year", &DateTime::year)
+		.def_readonly("month", &DateTime::month)
+		.def_readonly("day", &DateTime::day)
+		.def_readonly("hour", &DateTime::hour)
+		.def_readonly("minute", &DateTime::minute)
+		.def_readonly("second", &DateTime::second)
+    ;
 
 	class_<BatteryInfo>("BatteryInfo", init<std::string>())
 		.def_readonly("level", &BatteryInfo::level)

@@ -11,22 +11,24 @@
 #include "gattlib.h"
 #include <vector>
 
+class DateTime {
+public:
+	int year;
+	int month;
+	int day;
+	int hour;
+	int minute;
+	int second;
+};
+
 class BatteryInfo {
 public:
 	BatteryInfo(std::string data);
 
 	uint8_t level;
-	tm last_charged;
+	DateTime last_charged;
 	uint16_t charge_counter;
-
-	typedef enum {
-		low = 1,
-		medium = 2,
-		full = 3,
-		notCharging = 4,
-	} BatteryStatus;
-
-	BatteryStatus status;
+	std::string status;
 };
 
 class BandDevice {

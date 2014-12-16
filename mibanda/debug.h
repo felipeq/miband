@@ -9,9 +9,12 @@
 static void
 hexdump(std::string data) {
     const char* c = data.data();
-    for (unsigned int i=0; i<data.length(); i++) {
-	int d = (int)*(c + i) & 0xff;
-	std::cout << std::hex << d << " ";
+	uint16_t size = data.length();
+
+	std::cout << size << " bytes: ";
+    for (unsigned int i=0; i<size; i++) {
+		int d = (int)*(c + i) & 0xff;
+		std::cout << std::hex << d << " ";
     }
     std::cout << std::endl;
 }

@@ -99,7 +99,9 @@ static void
 _read_by_handler_cb(guint8 status, const guint8* data,
 					guint16 size, gpointer userp) {
     GATTResponse* response = (GATTResponse*)userp;
-    response->notify(status, std::string((const char*)data, size));
+
+	// first byte is the payload size
+    response->notify(status, std::string((const char*)data + 1, size - 1));
 }
 
 void
