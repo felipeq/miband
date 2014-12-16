@@ -1,5 +1,8 @@
 # -*- mode: makefile-gmake; coding: utf-8 -*-
 
+# Copyright (C) 2014, Oscar Acena <oscar.acena@uclm.es>
+# This software is under the terms of GPLv3 or later.
+
 TARGETS  = services.so devices.so
 OBJECTS  = devices.o gattlib.o att.o crypto.o uuid.o gatt.o gattrib.o \
 	   btio.o log.o utils.o

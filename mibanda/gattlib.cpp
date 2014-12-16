@@ -1,5 +1,8 @@
 // -*- mode: c++; coding: utf-8; tab-width: 4 -*-
 
+// Copyright (C) 2014, Oscar Acena <oscar.acena@uclm.es>
+// This software is under the terms of GPLv3 or later.
+
 #include <iostream>
 #include <boost/thread/thread.hpp>
 

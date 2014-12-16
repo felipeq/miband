@@ -1,5 +1,8 @@
 // -*- mode: c++; coding: utf-8; tab-width: 4 -*-
 
+// Copyright (C) 2014, Oscar Acena <oscar.acena@uclm.es>
+// This software is under the terms of GPLv3 or later.
+
 #include <bluetooth/bluetooth.h>
 #include <bluetooth/hci.h>
 #include <bluetooth/hci_lib.h>
