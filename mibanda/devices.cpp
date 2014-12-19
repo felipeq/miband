@@ -52,7 +52,9 @@ BandDevice::getBatteryInfo() {
 	GATTResponse response;
 	_gatt.read_by_handler(HANDLER_BATTERY, &response);
 
-	if (not response.wait(5))
+	std::cout << "wait response" << std::endl;
+
+	if (not response.wait(MAX_WAIT_FOR_PACKET))
 		// FIXME: now, response is deleted, but is still registered on
 		// GLIB as callback!!
 		throw std::runtime_error("Devices is not responding!");

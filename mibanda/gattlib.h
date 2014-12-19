@@ -6,9 +6,19 @@
 #ifndef _MIBANDA_GATTLIB_H_
 #define _MIBANDA_GATTLIB_H_
 
+#define MAX_WAIT_FOR_PACKET 15 // seconds
+
 #include <string>
 #include <stdint.h>
 #include <glib.h>
+
+extern "C" {
+#include "lib/uuid.h"
+#include "attrib/att.h"
+#include "attrib/gattrib.h"
+#include "attrib/gatt.h"
+#include "attrib/utils.h"
+}
 
 #include "event.hpp"
 
@@ -43,6 +53,7 @@ public:
 private:
 	std::string _address;
 	GIOChannel* _channel;
+	GAttrib* _attrib;
 };
 
 #endif // _MIBANDA_GATTLIB_H_
