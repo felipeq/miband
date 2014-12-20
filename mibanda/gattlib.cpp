@@ -4,6 +4,7 @@
 // This software is under the terms of GPLv3 or later.
 
 #include <iostream>
+#include <boost/python.hpp>
 #include <boost/thread/thread.hpp>
 
 #include "gattlib.h"
@@ -93,9 +94,6 @@ GATTRequester::GATTRequester(std::string address) :
 		 &gerr,
 		 (gpointer)this);
 
-	std::cout << "channel created" << std::endl;
-	std::cout.flush();
-
 	if (_channel == NULL) {
 	 	g_error_free(gerr);
 		throw std::runtime_error(gerr->message);
@@ -118,19 +116,58 @@ read_by_handler_cb(guint8 status, const guint8* data,
 					guint16 size, gpointer userp) {
     GATTResponse* response = (GATTResponse*)userp;
 
-	// first byte is the payload size
+	// First byte is the payload size
     response->notify(status, std::string((const char*)data + 1, size - 1));
 }
 
 void
-GATTRequester::read_by_handler(uint16_t handle, GATTResponse* response) {
-	// Allow channel to be properly created
+GATTRequester::read_by_handle_async(uint16_t handle, GATTResponse* response) {
+	check_channel();
+    gatt_read_char(_attrib, handle, read_by_handler_cb, (gpointer)response);
+}
+
+std::string
+GATTRequester::read_by_handle(uint16_t handle) {
+	GATTResponse response;
+	read_by_handle_async(handle, &response);
+
+	if (not response.wait(MAX_WAIT_FOR_PACKET))
+		// FIXME: now, response is deleted, but is still registered on
+		// GLIB as callback!!
+		throw std::runtime_error("Devices is not responding!");
+
+	return response.received();
+}
+
+void
+GATTRequester::write_by_handle(uint16_t handle, std::string data) {
+	check_channel();
+	gatt_write_cmd(_attrib, handle, (const uint8_t*)data.data(), data.size(), NULL, NULL);
+}
+
+void
+GATTRequester::check_channel() {
 	time_t ts = time(NULL);
 	while (_channel == NULL || _attrib == NULL) {
 		usleep(1000);
 		if (time(NULL) - ts > MAX_WAIT_FOR_PACKET)
 			throw std::runtime_error("Channel or attrib not ready");
 	}
+}
 
-	gatt_read_char(_attrib, handle, read_by_handler_cb, (gpointer)response);
+using namespace boost::python;
+BOOST_PYTHON_MODULE(gattlib) {
+
+	class_<GATTRequester>("GATTRequester", init<std::string>())
+		.def("read_by_handle", &GATTRequester::read_by_handle)
+		.def("read_by_handle_async", &GATTRequester::read_by_handle_async)
+		.def("write_by_handle", &GATTRequester::write_by_handle)
+    ;
+
+	register_ptr_to_python<GATTResponse*>();
+
+	class_<GATTResponse, boost::noncopyable>("GATTResponse")
+		.def("wait", &GATTResponse::wait)
+		.def("received", &GATTResponse::received)
+	;
 }

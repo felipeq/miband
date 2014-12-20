@@ -3,9 +3,8 @@
 # Copyright (C) 2014, Oscar Acena <oscar.acena@uclm.es>
 # This software is under the terms of GPLv3 or later.
 
-TARGETS  = services.so devices.so
-OBJECTS  = devices.o gattlib.o att.o crypto.o uuid.o gatt.o gattrib.o \
-	   btio.o log.o utils.o
+TARGETS  = services.so gattlib.so
+OBJECTS  = att.o crypto.o uuid.o gatt.o gattrib.o btio.o log.o utils.o
 
 CFLAGS  += -ggdb -fPIC -Wall $$(python-config --includes) \
 	   -Ibluez $$(pkg-config --cflags glib-2.0)
@@ -22,10 +21,10 @@ vpath %.c bluez/btio
 
 all: $(TARGETS)
 
-services.so: $(OBJECTS) services.o
+services.so: $(OBJECTS) gattlib.o services.o
 	$(CXX) $(CXXFLAGS) -shared -o $@ $^ $(LDFLAGS)
 
-devices.so: $(OBJECTS)
+gattlib.so: $(OBJECTS) gattlib.o
 	$(CXX) $(CXXFLAGS) -shared -o $@ $^ $(LDFLAGS)
 
 .PHONY: clean

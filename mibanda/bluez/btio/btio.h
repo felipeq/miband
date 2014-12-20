@@ -92,4 +92,16 @@ GIOChannel *bt_io_listen(BtIOConnect connect, BtIOConfirm confirm,
 				gpointer user_data, GDestroyNotify destroy,
 				GError **err, BtIOOption opt1, ...);
 
+/* Note: added tu support older versions of bluetooth-dev */
+#ifndef BT_VOICE
+#define BT_VOICE  11
+#define BT_SNDMTU 12
+#define BT_RCVMTU 13
+
+struct bt_voice {
+    uint16_t setting;
+};
+
+#endif /* BT_VOICE */
+
 #endif

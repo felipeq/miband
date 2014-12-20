@@ -12,8 +12,7 @@ if not bands:
     print "No bands found!"
     sys.exit(-1)
 
-for band in bands:
-    print "Band found, called '{}', addres: {}".format(
-        band.getName(), band.getAddress())
+for mac, name in bands.items():
+    print "Band found, called '{}', addres: {}".format(name, mac)
 
 print "OK"

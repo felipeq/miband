@@ -7,11 +7,12 @@
 #include <bluetooth/hci.h>
 #include <bluetooth/hci_lib.h>
 
+#include <boost/python/suite/indexing/map_indexing_suite.hpp>
+#include <boost/python/dict.hpp>
 #include <boost/python.hpp>
 #include <exception>
 #include <map>
 
-#include "devices.h"
 #include "gattlib.h"
 
 #define EIR_NAME_SHORT     0x08  /* shortened local name */
@@ -167,15 +168,14 @@ public:
 			throw std::runtime_error("Disable scan failed");
 	}
 
-	BandDeviceList discover() {
+	boost::python::dict discover() {
 		enable_scan_mode();
 		StringDict devices = get_advertisements();
 		disable_scan_mode();
 
-		BandDeviceList retval;
-		for (StringDict::iterator i=devices.begin(); i!=devices.end(); i++) {
-			BandDevicePtr dev = BandDevicePtr(new BandDevice(i->first, i->second));
-			retval.push_back(dev);
+		boost::python::dict retval;
+		for (StringDict::iterator i = devices.begin(); i != devices.end(); i++) {
+			retval[i->first] = i->second;
 		}
 
 		return retval;
@@ -190,8 +190,7 @@ private:
 using namespace boost::python;
 BOOST_PYTHON_MODULE(services) {
 
-	class_<DiscoveryService>("DiscoveryService",
-							 init<std::string, int>())
+	class_<DiscoveryService>("DiscoveryService", init<std::string, int>())
 		.def("discover", &DiscoveryService::discover)
 	;
 

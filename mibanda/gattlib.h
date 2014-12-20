@@ -46,11 +46,15 @@ class GATTRequester {
 public:
 	GATTRequester(std::string address);
 	~GATTRequester();
-	void read_by_handler(uint16_t handle, GATTResponse* response);
+	void read_by_handle_async(uint16_t handle, GATTResponse* response);
+	std::string read_by_handle(uint16_t handle);
+	void write_by_handle(uint16_t handle, std::string data);
 
 	friend void connect_cb(GIOChannel*, GError*, gpointer);
 
 private:
+	void check_channel();
+
 	std::string _address;
 	GIOChannel* _channel;
 	GAttrib* _attrib;
