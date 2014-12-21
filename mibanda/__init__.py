@@ -14,6 +14,8 @@ DiscoveryService
 
 UUID_DEVICE_NAME = "0000ff02-0000-1000-8000-00805f9b34fb"
 UUID_BATTERY     = "0000ff0c-0000-1000-8000-00805f9b34fb"
+UUID_STEPS       = "0000ff06-0000-1000-8000-00805f9b34fb"
+UUID_LE_PARAMS   = "0000ff09-0000-1000-8000-00805f9b34fb"
 
 
 class BatteryInfo(object):
@@ -25,6 +27,17 @@ class BatteryInfo(object):
 
         status_names = {1: 'low', 2: 'medium', 3: 'full', 4: 'not charging'}
         self.status = status_names.get(fields[9], "unknown")
+
+
+class LEParams(object):
+    def __init__(self, data):
+        fields = map(ord, data)
+        self.minimum_connection_interval = fields[0] + (fields[1] << 8)
+        self.maximum_connection_interval = fields[2] + (fields[3] << 8)
+        self.latency = fields[4] + (fields[5] << 8)
+        self.timeout = fields[6] + (fields[7] << 8)
+        self.connection_interval = fields[8] + (fields[9] << 8)
+        self.advertisement_interval = fields[10] + (fields[11] << 8)
 
 
 class BandDevice(object):
@@ -43,6 +56,14 @@ class BandDevice(object):
         data = self.requester.read_by_uuid(UUID_BATTERY)
         return BatteryInfo(data[0])
 
+    def getSteps(self):
+        data = self.requester.read_by_uuid(UUID_STEPS)[0]
+        return ord(data[0]) + (ord(data[1]) << 8)
+        
+    def getLEParams(self):
+        data = self.requester.read_by_uuid(UUID_LE_PARAMS)[0]
+        return LEParams(data)
+        
 
 # NOTE: call this only once!
 from services import IOService

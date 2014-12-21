@@ -24,3 +24,13 @@ if __name__ == '__main__':
 
     print "MAC:", dev.getAddress()
     print "NAME:", dev.getName()
+    print "STEPS:", dev.getSteps()
+    
+    params = dev.getLEParams()
+    print " - minimum_connection_interval:", params.minimum_connection_interval
+    print " - maximum_connection_interval:", params.maximum_connection_interval
+    print " - latency:", params.latency
+    print " - timeout:", params.timeout
+    print " - connection_interval:", params.connection_interval
+    print " - advertisement_interval:", params.advertisement_interval
+
