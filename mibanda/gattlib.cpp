@@ -4,8 +4,8 @@
 // This software is under the terms of GPLv3 or later.
 
 #include <iostream>
-#include <boost/python.hpp>
 #include <boost/thread/thread.hpp>
+#include <boost/python.hpp>
 
 #include "gattlib.h"
 
@@ -22,11 +22,19 @@ IOService::operator()() {
 	g_main_loop_unref(event_loop);
 }
 
+GATTResponse::GATTResponse() :
+	_status(0) {
+}
+
 void
-GATTResponse::notify(uint8_t status, std::string data) {
-    _status = status;
-    _data = data;
-    _event.set();
+GATTResponse::add_result(std::string data) {
+    _data.append(data);
+}
+
+void
+GATTResponse::notify(uint8_t status) {
+	_status = status;
+	_event.set();
 }
 
 bool
@@ -35,7 +43,7 @@ GATTResponse::wait(uint16_t timeout) {
 		return false;
 
     if (_status != 0) {
-		std::string msg = "Characteristic value/descriptor read failed: ";
+		std::string msg = "Characteristic value/descriptor operation failed: ";
 		msg += att_ecode2str(_status);
 		throw std::runtime_error(msg);
     }
@@ -43,7 +51,7 @@ GATTResponse::wait(uint16_t timeout) {
     return true;
 }
 
-std::string
+boost::python::list
 GATTResponse::received() {
     return _data;
 }
@@ -112,12 +120,12 @@ GATTRequester::~GATTRequester() {
 }
 
 static void
-read_by_handler_cb(guint8 status, const guint8* data,
-					guint16 size, gpointer userp) {
-    GATTResponse* response = (GATTResponse*)userp;
+read_by_handler_cb(guint8 status, const guint8* data, guint16 size, gpointer userp) {
 
-	// First byte is the payload size
-    response->notify(status, std::string((const char*)data + 1, size - 1));
+	// Note: first byte is the payload size, remove it
+    GATTResponse* response = (GATTResponse*)userp;
+    response->add_result(std::string((const char*)data + 1, size - 1));
+	response->notify(status);
 }
 
 void
@@ -126,7 +134,7 @@ GATTRequester::read_by_handle_async(uint16_t handle, GATTResponse* response) {
     gatt_read_char(_attrib, handle, read_by_handler_cb, (gpointer)response);
 }
 
-std::string
+boost::python::list
 GATTRequester::read_by_handle(uint16_t handle) {
 	GATTResponse response;
 	read_by_handle_async(handle, &response);
@@ -134,15 +142,88 @@ GATTRequester::read_by_handle(uint16_t handle) {
 	if (not response.wait(MAX_WAIT_FOR_PACKET))
 		// FIXME: now, response is deleted, but is still registered on
 		// GLIB as callback!!
-		throw std::runtime_error("Devices is not responding!");
+		throw std::runtime_error("Device is not responding!");
 
 	return response.received();
 }
 
+static void
+read_by_uuid_cb(guint8 status, const guint8* data, guint16 size, gpointer userp) {
+
+	struct att_data_list* list;
+	list = dec_read_by_type_resp(data, size);
+	if (list == NULL)
+	 	return;
+
+    GATTResponse* response = (GATTResponse*)userp;
+	for (int i=0; i<list->num; i++) {
+		uint8_t* item = list->data[i];
+
+		// Remove handle addr
+		item += 2;
+
+		std::string value((const char*)item, list->len - 2);
+		response->add_result(value);
+	}
+
+	att_data_list_free(list);
+	response->notify(status);
+}
+
+void
+GATTRequester::read_by_uuid_async(std::string uuid, GATTResponse* response) {
+	uint16_t start = 0x0001;
+	uint16_t end = 0xffff;
+	bt_uuid_t btuuid;
+
+	check_channel();
+	if (bt_string_to_uuid(&btuuid, uuid.c_str()) < 0)
+		throw std::runtime_error("Invalid UUID\n");
+
+	gatt_read_char_by_uuid(_attrib, start, end, &btuuid, read_by_uuid_cb,
+						   (gpointer)response);
+
+}
+
+boost::python::list
+GATTRequester::read_by_uuid(std::string uuid) {
+	GATTResponse response;
+	read_by_uuid_async(uuid, &response);
+
+	if (not response.wait(MAX_WAIT_FOR_PACKET))
+		// FIXME: now, response is deleted, but is still registered on
+		// GLIB as callback!!
+		throw std::runtime_error("Device is not responding!");
+
+	return response.received();
+}
+
+static void
+write_by_handle_cb(guint8 status, const guint8* data, guint16 size, gpointer userp) {
+	std::cout << "Response recived from write request, size: "
+			  << size << " bytes" << std::endl;
+
+	GATTResponse* response = (GATTResponse*)userp;
+	response->notify(status);
+}
+
+void
+GATTRequester::write_by_handle_async(uint16_t handle, std::string data,
+									 GATTResponse* response) {
+	check_channel();
+	gatt_write_char(_attrib, handle, (const uint8_t*)data.data(), data.size(),
+					write_by_handle_cb, (gpointer)response);
+}
+
 void
 GATTRequester::write_by_handle(uint16_t handle, std::string data) {
-	check_channel();
-	gatt_write_cmd(_attrib, handle, (const uint8_t*)data.data(), data.size(), NULL, NULL);
+	GATTResponse response;
+	write_by_handle_async(handle, data, &response);
+
+	if (not response.wait(MAX_WAIT_FOR_PACKET))
+		// FIXME: now, response is deleted, but is still registered on
+		// GLIB as callback!!
+		throw std::runtime_error("Device is not responding!");
 }
 
 void
@@ -161,7 +242,10 @@ BOOST_PYTHON_MODULE(gattlib) {
 	class_<GATTRequester>("GATTRequester", init<std::string>())
 		.def("read_by_handle", &GATTRequester::read_by_handle)
 		.def("read_by_handle_async", &GATTRequester::read_by_handle_async)
+		.def("read_by_uuid", &GATTRequester::read_by_uuid)
+		.def("read_by_uuid_async", &GATTRequester::read_by_uuid_async)
 		.def("write_by_handle", &GATTRequester::write_by_handle)
+		.def("write_by_handle_async", &GATTRequester::write_by_handle_async)
     ;
 
 	register_ptr_to_python<GATTResponse*>();

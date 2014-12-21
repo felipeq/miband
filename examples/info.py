@@ -21,3 +21,6 @@ if __name__ == '__main__':
     print " - last_charged:", binfo.last_charged
     print " - charge_counter:", binfo.charge_counter
     print " - status:", binfo.status
+
+    print "MAC:", dev.getAddress()
+    print "NAME:", dev.getName()

@@ -12,7 +12,8 @@ from services import DiscoveryService
 DiscoveryService
 
 
-HANDLER_BATTERY = 0x2b
+UUID_DEVICE_NAME = "0000ff02-0000-1000-8000-00805f9b34fb"
+UUID_BATTERY     = "0000ff0c-0000-1000-8000-00805f9b34fb"
 
 
 class BatteryInfo(object):
@@ -31,9 +32,16 @@ class BandDevice(object):
         self.address = address
         self.requester = GATTRequester(address)
 
+    def getAddress(self):
+        return self.address
+
+    def getName(self):
+        data = self.requester.read_by_uuid(UUID_DEVICE_NAME)
+        return data[0]
+
     def getBatteryInfo(self):
-        data = self.requester.read_by_handle(HANDLER_BATTERY)
-        return BatteryInfo(data)
+        data = self.requester.read_by_uuid(UUID_BATTERY)
+        return BatteryInfo(data[0])
 
 
 # NOTE: call this only once!
