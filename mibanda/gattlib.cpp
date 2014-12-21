@@ -204,6 +204,7 @@ write_by_handle_cb(guint8 status, const guint8* data, guint16 size, gpointer use
 			  << size << " bytes" << std::endl;
 
 	GATTResponse* response = (GATTResponse*)userp;
+	response->add_result(std::string((const char*)data, size));
 	response->notify(status);
 }
 
@@ -215,7 +216,7 @@ GATTRequester::write_by_handle_async(uint16_t handle, std::string data,
 					write_by_handle_cb, (gpointer)response);
 }
 
-void
+boost::python::list
 GATTRequester::write_by_handle(uint16_t handle, std::string data) {
 	GATTResponse response;
 	write_by_handle_async(handle, data, &response);
@@ -224,6 +225,8 @@ GATTRequester::write_by_handle(uint16_t handle, std::string data) {
 		// FIXME: now, response is deleted, but is still registered on
 		// GLIB as callback!!
 		throw std::runtime_error("Device is not responding!");
+	
+	return response.received();
 }
 
 void
