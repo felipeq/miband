@@ -3,8 +3,7 @@
 
 import sys
 
-from mibanda.gattlib import GATTRequester
-from hexdump import hexdump
+from mibanda import BandDevice
 
 
 if __name__ == '__main__':
@@ -12,6 +11,7 @@ if __name__ == '__main__':
         print "Usage: {} <mac_address>".format(sys.argv[0])
         sys.exit(1)
 
-    req = GATTRequester(sys.argv[1])
-    data = req.write_by_handle(0x2e, str(bytearray([2])))    
+    dev = BandDevice(sys.argv[1])
+    dev.selfTest()
+
     print "OK"

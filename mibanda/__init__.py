@@ -17,6 +17,8 @@ UUID_BATTERY     = "0000ff0c-0000-1000-8000-00805f9b34fb"
 UUID_STEPS       = "0000ff06-0000-1000-8000-00805f9b34fb"
 UUID_LE_PARAMS   = "0000ff09-0000-1000-8000-00805f9b34fb"
 
+HANDLE_TEST      = 0x2e
+
 
 class BatteryInfo(object):
     def __init__(self, data):
@@ -63,6 +65,9 @@ class BandDevice(object):
     def getLEParams(self):
         data = self.requester.read_by_uuid(UUID_LE_PARAMS)[0]
         return LEParams(data)
+    
+    def selfTest(self):
+        self.requester.write_by_handle(HANDLE_TEST, str(bytearray([2])))    
         
 
 # NOTE: call this only once!
