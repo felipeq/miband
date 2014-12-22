@@ -1,8 +1,7 @@
 Description
 ===========
 
-This is a library to access the Xiaomi Mi Band. It is written in C++,
-along with some bindings for Python.
+This is a Python library to access the Xiaomi Mi Band.
 
 Compiling
 =========
