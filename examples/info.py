@@ -11,11 +11,11 @@ if __name__ == '__main__':
         print "Usage: {} <mac_address>".format(sys.argv[0])
         sys.exit(1)
 
-    dev = BandDevice(sys.argv[1])
-
     print "Connectiing, please wait..."
-    binfo = dev.getBatteryInfo()
+    dev = BandDevice(sys.argv[1], "")
+    dev.connect()
 
+    binfo = dev.getBatteryInfo()
     print "BATTERY:"
     print " - level:", binfo.level
     print " - last_charged:", binfo.last_charged
@@ -23,9 +23,9 @@ if __name__ == '__main__':
     print " - status:", binfo.status
 
     print "MAC:", dev.getAddress()
-    print "NAME:", dev.getName()
+    print "NAME:", dev.getName(cached=False)
     print "STEPS:", dev.getSteps()
-    
+
     params = dev.getLEParams()
     print " - minimum_connection_interval:", params.minimum_connection_interval
     print " - maximum_connection_interval:", params.maximum_connection_interval
@@ -33,4 +33,3 @@ if __name__ == '__main__':
     print " - timeout:", params.timeout
     print " - connection_interval:", params.connection_interval
     print " - advertisement_interval:", params.advertisement_interval
-

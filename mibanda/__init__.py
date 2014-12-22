@@ -4,7 +4,7 @@
 # This software is under the terms of GPLv3 or later.
 
 from datetime import datetime
-from gattlib import DiscoveryService, GATTRequester
+import gattlib
 
 
 UUID_DEVICE_NAME = "0000ff02-0000-1000-8000-00805f9b34fb"
@@ -38,14 +38,22 @@ class LEParams(object):
 
 
 class BandDevice(object):
-    def __init__(self, address):
+    def __init__(self, address, name):
         self.address = address
-        self.requester = GATTRequester(address)
+        self.name = name
+
+        self.requester = gattlib.GATTRequester(address, False)
+
+    def connect(self):
+        self.requester.connect(True)
 
     def getAddress(self):
         return self.address
 
-    def getName(self):
+    def getName(self, cached=True):
+        if cached:
+            return self.name
+
         data = self.requester.read_by_uuid(UUID_DEVICE_NAME)
         return data[0]
 
@@ -63,3 +71,15 @@ class BandDevice(object):
 
     def selfTest(self):
         self.requester.write_by_handle(HANDLE_TEST, str(bytearray([2])))
+
+
+class DiscoveryService(object):
+    def __init__(self, device="hci0"):
+        self.service = gattlib.DiscoveryService(device)
+
+    def discover(self, timeout=3):
+        bands = []
+        for addr, name in self.service.discover(timeout).items():
+            band = BandDevice(addr, name)
+            bands.append(band)
+        return bands

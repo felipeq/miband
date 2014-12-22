@@ -11,7 +11,9 @@ if __name__ == '__main__':
         print "Usage: {} <mac_address>".format(sys.argv[0])
         sys.exit(1)
 
-    dev = BandDevice(sys.argv[1])
+    dev = BandDevice(sys.argv[1], "")
+    dev.connect()
+
     dev.selfTest()
 
     print "OK"
