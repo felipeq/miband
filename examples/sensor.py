@@ -3,7 +3,7 @@
 
 import sys
 
-from mibanda.gattlib import GATTRequester
+from gattlib import GATTRequester
 from hexdump import hexdump
 
 
@@ -23,5 +23,3 @@ if __name__ == '__main__':
     hexdump(data[0])
 
     print "OK"
-
-

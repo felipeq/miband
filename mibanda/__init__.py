@@ -4,12 +4,7 @@
 # This software is under the terms of GPLv3 or later.
 
 from datetime import datetime
-
-from gattlib import GATTRequester
-
-# just make it available for other modules
-from services import DiscoveryService
-DiscoveryService
+from gattlib import DiscoveryService, GATTRequester
 
 
 UUID_DEVICE_NAME = "0000ff02-0000-1000-8000-00805f9b34fb"
@@ -68,8 +63,3 @@ class BandDevice(object):
 
     def selfTest(self):
         self.requester.write_by_handle(HANDLE_TEST, str(bytearray([2])))
-
-
-# NOTE: call this only once!
-from services import IOService
-IOService().start()

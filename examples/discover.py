@@ -5,8 +5,8 @@ import sys
 from mibanda import DiscoveryService
 
 
-ds = DiscoveryService("hci0", 2)
-bands = ds.discover()
+ds = DiscoveryService("hci0")
+bands = ds.discover(2)
 
 if not bands:
     print "No bands found!"
