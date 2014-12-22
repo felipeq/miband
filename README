@@ -1,21 +1,8 @@
 Description
 ===========
 
-This is a Python library to access the Xiaomi Mi Band.
-
-Compiling
-=========
-
-First, assure that you have the needed depends. The file called
-DEPENDS shows what you need. If you use Debian or derivatives (like
-Ubuntu), and want to install everyting in one step, just do the
-following:
-
-    miband$ sudo apt-get install $(cat DEPENDS)
-
-After that, you can compile it with:
-
-    miband$ make
+This is a pure Python library to access the Xiaomi Mi Band. It uses
+the library called pygattlib underneath.
 
 Using it
 ========

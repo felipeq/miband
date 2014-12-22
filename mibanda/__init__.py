@@ -61,14 +61,14 @@ class BandDevice(object):
     def getSteps(self):
         data = self.requester.read_by_uuid(UUID_STEPS)[0]
         return ord(data[0]) + (ord(data[1]) << 8)
-        
+
     def getLEParams(self):
         data = self.requester.read_by_uuid(UUID_LE_PARAMS)[0]
         return LEParams(data)
-    
+
     def selfTest(self):
-        self.requester.write_by_handle(HANDLE_TEST, str(bytearray([2])))    
-        
+        self.requester.write_by_handle(HANDLE_TEST, str(bytearray([2])))
+
 
 # NOTE: call this only once!
 from services import IOService
