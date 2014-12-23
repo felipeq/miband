@@ -1,0 +1,6 @@
+attr handle = 0x0001, end grp handle = 0x0009 uuid: 00001800-0000-1000-8000-00805f9b34fb Generic Access Service
+attr handle = 0x000c, end grp handle = 0x000f uuid: 00001801-0000-1000-8000-00805f9b34fb Generic Attribute Service
+
+attr handle = 0x0010, end grp handle = 0x0033 uuid: 0000fee0-0000-1000-8000-00805f9b34fb ????
+attr handle = 0x0034, end grp handle = 0x003a uuid: 0000fee1-0000-1000-8000-00805f9b34fb ????
+attr handle = 0x003b, end grp handle = 0x0042 uuid: 0000fee7-0000-1000-8000-00805f9b34fb ????

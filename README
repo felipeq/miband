@@ -1,0 +1,26 @@
+Description
+===========
+
+This is a pure Python library to access the Xiaomi Mi Band. It uses
+the library called pygattlib underneath. Please see https://bitbucket.org/OscarAcena/pygattlib 
+for instructions of how to install it.
+
+Using it
+========
+
+First, make sure that your Python binary could find the miband
+package. If you installed the Debian package, don't worry. Otherwise,
+set the PYTHONPATH to the proper location (i.e: this repo root
+dir). You can do so by:
+
+    miband$ . setenv.sh
+
+Now, just import the module `mibanda`, and use it according to the API
+documentation, or as in the examples.
+
+References
+==========
+
+* http://forum.xda-developers.com/android/software/xiaomi-mi-bluetooth-le-band-protocol-t2963581
+* http://allmydroids.blogspot.de/2014/12/xiaomi-mi-band-ble-protocol-reverse.html
+* https://github.com/KashaMalaga/XiaomiMiBand

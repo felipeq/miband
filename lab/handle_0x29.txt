@@ -1,0 +1,75 @@
+- 20 bytes of data
+- it changes with the clock, the position does not affect
+- it appears to be a
+
+- 10 reads moving around the band (sleep 3 between each acquire):
+    1f 1b 11 11 d4 c6 00 00 11 a6 07 00 26 b1 be a8 96 58 46 00
+    6b 1b 11 11 d4 c6 00 00 11 a6 07 00 28 b1 be a8 99 58 46 00
+    d6 1b 11 11 d4 c6 00 00 11 a6 07 00 2a b1 be a8 a1 58 46 00
+    46 1c 11 11 d4 c6 00 00 11 a6 07 00 2c b1 be a8 a7 58 46 00
+    a6 1c 11 11 d4 c6 00 00 11 a6 07 00 2e b1 be a8 ac 58 46 00
+    fe 1c 11 11 d4 c6 00 00 11 a6 07 00 30 b1 be a8 af 58 46 00
+    e6 1d 11 11 d4 c6 00 00 ba b1 07 00 32 b1 be a8 b7 58 46 00
+    b4 1e 11 11 d4 c6 00 00 ba b1 07 00 34 b1 be a8 bb 58 46 00
+    0a 1f 11 11 d4 c6 00 00 ba b1 07 00 36 b1 be a8 be 58 46 00
+    84 1f 11 11 d4 c6 00 00 ba b1 07 00 39 b1 be a8 c5 58 46 00
+
+- 10 reads with a static position (sleep 3 between each acquire):
+    c3 7e 11 11 d4 c6 00 00 b5 d4 07 00 c4 b1 be a8 6d 5e 46 00
+    2c 7f 11 11 d4 c6 00 00 b5 d4 07 00 c7 b1 be a8 73 5e 46 00
+    86 7f 11 11 d4 c6 00 00 b5 d4 07 00 c9 b1 be a8 77 5e 46 00
+    5d 80 11 11 d4 c6 00 00 b5 d4 07 00 cb b1 be a8 7d 5e 46 00
+    cb 80 11 11 d4 c6 00 00 b5 d4 07 00 ce b1 be a8 81 5e 46 00
+    28 81 11 11 d4 c6 00 00 b5 d4 07 00 d0 b1 be a8 87 5e 46 00
+    7f 81 11 11 d4 c6 00 00 b5 d4 07 00 d2 b1 be a8 8c 5e 46 00
+    e2 81 11 11 d4 c6 00 00 b5 d4 07 00 d4 b1 be a8 8f 5e 46 00
+    c1 82 11 11 d4 c6 00 00 b5 d4 07 00 d6 b1 be a8 97 5e 46 00
+    87 83 11 11 d4 c6 00 00 b5 d4 07 00 d8 b1 be a8 9d 5e 46 00
+
+- 10 reads with same static position (some time later, sleep 3 between each acquire):
+    71 b4 11 11 d4 c6 00 00 b5 d4 07 00 da b1 be a8 b0 60 46 00
+    33 b5 11 11 d4 c6 00 00 b5 d4 07 00 dc b1 be a8 b5 60 46 00
+    93 b5 11 11 d4 c6 00 00 b5 d4 07 00 de b1 be a8 b8 60 46 00
+    0d b6 11 11 d4 c6 00 00 b5 d4 07 00 e0 b1 be a8 c0 60 46 00
+    73 b6 11 11 d4 c6 00 00 b5 d4 07 00 e2 b1 be a8 c6 60 46 00
+    59 b7 11 11 d4 c6 00 00 b5 d4 07 00 e4 b1 be a8 cf 60 46 00
+    c8 b7 11 11 d4 c6 00 00 b5 d4 07 00 e6 b1 be a8 d5 60 46 00
+    31 b8 11 11 d4 c6 00 00 b5 d4 07 00 e9 b1 be a8 db 60 46 00
+    8b b8 11 11 d4 c6 00 00 b5 d4 07 00 eb b1 be a8 df 60 46 00
+    03 b9 11 11 d4 c6 00 00 b5 d4 07 00 ed b1 be a8 e7 60 46 00
+
+- 10 reads with another static position (sleep 3 between each acquire):
+    f0 bb 11 11 d4 c6 00 00 b5 d4 07 00 ef b1 be a8 53 61 46 00
+    52 bc 11 11 d4 c6 00 00 b5 d4 07 00 f2 b1 be a8 56 61 46 00
+    b7 bc 11 11 d4 c6 00 00 b5 d4 07 00 f4 b1 be a8 5c 61 46 00
+    26 bd 11 11 d4 c6 00 00 b5 d4 07 00 f6 b1 be a8 62 61 46 00
+    9b bd 11 11 d4 c6 00 00 b5 d4 07 00 f8 b1 be a8 68 61 46 00
+    10 be 11 11 d4 c6 00 00 b5 d4 07 00 fa b1 be a8 6e 61 46 00
+    73 be 11 11 d4 c6 00 00 b5 d4 07 00 fc b1 be a8 71 61 46 00
+    ef be 11 11 d4 c6 00 00 b5 d4 07 00 ff b1 be a8 78 61 46 00
+    aa bf 11 11 d4 c6 00 00 b5 d4 07 00 01 b2 be a8 7b 61 46 00
+    0e c0 11 11 d4 c6 00 00 b5 d4 07 00 03 b2 be a8 83 61 46 00
+
+- 10 reads rotating 90 degrees (sleep 3 between each acquire):
+    e6 c3 11 11 d4 c6 00 00 b5 d4 07 00 05 b2 be a8 2c 62 46 00
+    95 c4 11 11 d4 c6 00 00 b5 d4 07 00 07 b2 be a8 2f 62 46 00
+    58 ce 11 11 d4 c6 00 00 b5 d4 07 00 09 b2 be a8 37 62 46 00
+    c9 ce 11 11 d4 c6 00 00 b5 d4 07 00 0b b2 be a8 3d 62 46 00
+    3a cf 11 11 d4 c6 00 00 b5 d4 07 00 0d b2 be a8 43 62 46 00
+    a0 cf 11 11 d4 c6 00 00 b5 d4 07 00 0f b2 be a8 48 62 46 00
+    76 d0 11 11 d4 c6 00 00 b5 d4 07 00 11 b2 be a8 4f 62 46 00
+    cd d0 11 11 d4 c6 00 00 b5 d4 07 00 13 b2 be a8 54 62 46 00
+    e9 e3 11 11 d4 c6 00 00 b5 d4 07 00 15 b2 be a8 5d 62 46 00
+    50 e4 11 11 d4 c6 00 00 b5 d4 07 00 17 b2 be a8 63 62 46 00
+
+- 10 reads moving it while acquiring (sleep 3 between each acquire):
+    eb 05 12 11 d4 c6 00 00 b5 d4 07 00 19 b2 be a8 65 63 46 00
+    60 06 12 11 d4 c6 00 00 b5 d4 07 00 1b b2 be a8 6b 63 46 00
+    76 0a 12 11 d4 c6 00 00 b5 d4 07 00 1d b2 be a8 6d 63 46 00
+    13 0b 12 11 d4 c6 00 00 5e e0 07 00 1f b2 be a8 76 63 46 00
+    8b 0b 12 11 d4 c6 00 00 5e e0 07 00 21 b2 be a8 7c 63 46 00
+    04 0c 12 11 d4 c6 00 00 5e e0 07 00 24 b2 be a8 82 63 46 00
+    72 0c 12 11 d4 c6 00 00 5e e0 07 00 26 b2 be a8 86 63 46 00
+    d2 0c 12 11 d4 c6 00 00 5e e0 07 00 28 b2 be a8 8c 63 46 00
+    ff 0d 12 11 d4 c6 00 00 5e e0 07 00 2b b2 be a8 90 63 46 00
+    5d 0e 12 11 d4 c6 00 00 5e e0 07 00 2d b2 be a8 93 63 46 00

@@ -1,0 +1,45 @@
+
+<div ng-controller="ScanCtrl" class="main fullscreen text-center">
+
+  <div ng-if="state == 'first-run'" class="well bounce-in-down">
+    <div class="headding" style="">Welcome! It's the first time?</div>
+    <div class="headding">No problem! Start by searching your device.</div>
+
+    <button class="btn btn-primary btn-big" style="margin-top: 50px; margin-bottom: 20px"
+	    ng-click="discover()">
+      Search my band
+    </button>
+  </div>
+
+  <div ng-if="state == 'discovering'" class="appear">
+    <div class="headding" style="position: relative; top: 120px; font-size: 1.7em">
+      Scanning...
+    </div>
+    <div round-progress
+  	 max="progress.max"
+  	 current="progress.current"
+  	 color="#428bca"
+  	 bgcolor="#eaeaea"
+  	 radius="100"
+  	 stroke="8"
+  	 semi="false"
+  	 iterations="{{ progress.iterations }}"
+  	 animation="linearEase">
+    </div>
+  </div>
+
+  <div ng-if="state == 'not-found'" class="appear">
+    Not found!
+  </div>
+
+  <div ng-if="state == 'found'" class="appear">
+    {{ devices }}
+  </div>
+
+</div>
+
+<!--
+    Local Variables:
+      truncate-lines: true
+    End:
+-->
