@@ -13,6 +13,7 @@ UUID_STEPS       = "0000ff06-0000-1000-8000-00805f9b34fb"
 UUID_LE_PARAMS   = "0000ff09-0000-1000-8000-00805f9b34fb"
 
 HANDLE_TEST      = 0x2e
+HANDLE_USER_INFO = 0x19
 
 
 class BatteryInfo(object):
@@ -71,6 +72,14 @@ class BandDevice(object):
 
     def selfTest(self):
         self.requester.write_by_handle(HANDLE_TEST, str(bytearray([2])))
+        
+    def pair(self):
+        data = [0x2c, 0x78, 0x91, 0x5c, 0x01, 0x2c, 0xae, 0x5d, 
+                0x01, 0x31, 0x35, 0x35, 0x33, 0x30, 0x33, 0x37, 
+                0x33, 0x35, 0x36, 0x0f]
+        self.requester.write_by_handle( 
+            HANDLE_USER_INFO, str(bytearray(data)))
+
 
 
 class DiscoveryService(object):
