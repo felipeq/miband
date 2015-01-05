@@ -2,6 +2,7 @@
 # -*- mode: python; coding: utf-8 -*-
 
 import sys
+import time
 
 from mibanda import BandDevice
 
@@ -15,6 +16,5 @@ if __name__ == '__main__':
     dev.connect()
     dev.pair()
 
-    
-
-
+    time.sleep(10)
+    print "OK"
