@@ -97,6 +97,10 @@ class BandDevice(object):
         self.requester.write_by_handle(
             HANDLE_CONTROL_POINT, str(bytearray([0x0e, r, g, b, 0x01])))
 
+    def locate(self):
+        self.requester.write_by_handle(
+            HANDLE_CONTROL_POINT, str(bytearray([0x08, 0x00])))
+
 
 class DiscoveryService(object):
     def __init__(self, device="hci0"):
