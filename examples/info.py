@@ -27,9 +27,14 @@ if __name__ == '__main__':
     print "STEPS:", dev.getSteps()
 
     params = dev.getLEParams()
+    print "LE PARAMS:"
     print " - minimum_connection_interval:", params.minimum_connection_interval
     print " - maximum_connection_interval:", params.maximum_connection_interval
     print " - latency:", params.latency
     print " - timeout:", params.timeout
     print " - connection_interval:", params.connection_interval
     print " - advertisement_interval:", params.advertisement_interval
+
+    devinfo = dev.getDeviceInfo()
+    print "DEVICE INFO:"
+    print " - firmware_version: ", devinfo.firmware_version

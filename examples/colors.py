@@ -29,7 +29,7 @@ if __name__ == '__main__':
               (6, 6, 6)]  # white
 
     for r, g, b in colors:
-        dev.flash_leds(r, g, b)
+        dev.flashLeds(r, g, b)
         time.sleep(2)
 
     print "OK"
