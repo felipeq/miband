@@ -19,23 +19,19 @@ class cn_com_smartdevices_bracelet_r:
 class com_xiaomi_hm_bleservice_a_b(object):
     @classmethod
     def d(cls, data):
-        """ This is some kind of CRC (it seems the Dallas CRC8) """
+        """ This is the Dallas CRC8 algorithm """
 
-        ret = 0
+        crc = 0
         for i in range(0, len(data)):
-            ret = ret ^ (data[i] & 0xff)
+            crc = crc ^ (data[i] & 0xff)
 
-            j = 0
-            while j < 8:
-                if (ret & 0x1) == 0:
-                    ret = (ret >> 1) & 0xff
-                    j += 1
-                    continue
+            for j in range(8):
+                if crc & 0x01:
+                    crc = (crc >> 1) ^ 0x8c
+                else:
+                    crc >>= 1
 
-                ret = (ret >> 1) & 0xff
-                ret = ret ^ 0x8c
-
-        return ret
+        return crc
 
 
 class com_xiaomi_hm_bleservice_profile_IMiLiProfile_UserInfo(object):
