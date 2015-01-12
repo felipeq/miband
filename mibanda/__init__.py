@@ -18,13 +18,17 @@ UUID_BATTERY     = "0000ff0c-0000-1000-8000-00805f9b34fb"
 HANDLE_TEST          = 0x2e
 HANDLE_USER_INFO     = 0x19
 HANDLE_CONTROL_POINT = 0x1b
+HANDLE_PAIR          = 0x33
 
 
 class BatteryInfo(object):
     def __init__(self, data):
         fields = map(ord, data)
         self.level = fields[0]
-        self.last_charged = datetime(2000 + fields[1], *fields[2:6])
+        self.last_charged = datetime(
+            fields[1] + 2000,
+            fields[2] + 1,
+            *fields[3:6])
         self.charge_counter = fields[7] + (fields[8] << 8)
 
         status_names = {1: 'low', 2: 'medium', 3: 'full', 4: 'not charging'}
@@ -88,7 +92,9 @@ class BandDevice(object):
         self.requester.write_by_handle(HANDLE_TEST, str(bytearray([2])))
 
     def pair(self):
-        raise NotImplementedError("Sorry, this is not yet available, I'm working on it :)")
+        # raise NotImplementedError(
+        # "Sorry, this is not yet available, I'm working on it :)")
+        self.requester.write_by_handle(HANDLE_PAIR, str(bytearray([2])))
 
     def setUserInfo(self, uid, gender, age, height, weight, type_, alias):
         seq = bytearray(20)

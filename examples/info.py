@@ -38,3 +38,4 @@ if __name__ == '__main__':
     devinfo = dev.getDeviceInfo()
     print "DEVICE INFO:"
     print " - firmware_version: ", devinfo.firmware_version
+
