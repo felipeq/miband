@@ -41,6 +41,26 @@
     {{ devices }}
   </div>
 
+  <div ng-if="state == 'error'" class="appear">
+    <div><i class="fa fa-warning" style="font-size: 10em; color: #c00"></i></div>
+    <div style="font-size: 2em; font-weight: bold; color: #555">
+      Oops. There were some error!
+    </div>
+
+    <br>
+    <a class="clickable"
+       data-toggle="collapse"
+       data-target="#error-details"
+       aria-expanded="false"
+       aria-controls="error-details">
+      See more info.
+    </a>
+    <div class="collapse" style="padding-top: 10px" id="error-details">
+      <b>{{ error.name}}:</b> {{ error.message }}
+    </div>
+
+  </div>
+
 </div>
 
 <!--

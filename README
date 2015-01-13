@@ -2,7 +2,7 @@ Description
 ===========
 
 This is a pure Python library to access the Xiaomi Mi Band. It uses
-the library called pygattlib underneath. Please see https://bitbucket.org/OscarAcena/pygattlib 
+the library called pygattlib underneath. Please see https://bitbucket.org/OscarAcena/pygattlib
 for instructions of how to install it.
 
 Using it
@@ -17,6 +17,11 @@ dir). You can do so by:
 
 Now, just import the module `mibanda`, and use it according to the API
 documentation, or as in the examples.
+
+TODO
+====
+
+* Avoid the need of using root (or sudo)
 
 References
 ==========

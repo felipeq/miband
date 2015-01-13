@@ -4,14 +4,18 @@
 import os
 import wise
 from subprocess import Popen
+import mibanda
 
 
 class DeviceManager(object):
-    def discover(self, current):
-        import time
-        time.sleep(2)
+    def discover(self, timeout, current):
+        ds = mibanda.DiscoveryService()
+        bands = ds.discover(timeout)
 
-        return [{'address': "00:11:22:33:44:55", 'name': "MI"}]
+        retval = []
+        for b in bands:
+            retval.append({'address': b.getAddress(), 'name': b.getName()})
+        return retval
 
     def connect(self, addr, current):
         print "connect to {} called".format(addr)
@@ -19,7 +23,7 @@ class DeviceManager(object):
 
 class Backend(object):
     def __init__(self):
-        broker = wise.initialize(properties={"TornadoApp.debug": True})
+        broker = wise.initialize(port=7154, properties={"TornadoApp.debug": True})
         static = os.path.join(wise.dirname(__file__), "static")
         broker.register_StaticFS('/static', static)
         url = broker.get_url('static/index.html')

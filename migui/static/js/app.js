@@ -13,7 +13,7 @@ miguiApp.config(['$routeProvider', function($routeProvider) {
 
 Logger = Class.extend({
     on_failure: function(error) {
-	log.error(title, message);
+	log.error(error);
     },
 });
 

@@ -2,40 +2,47 @@
 
 miguiApp.controller("ScanCtrl", function($rootScope, $scope, $interval) {
     $scope.devices = [];
+    $scope.scan_counter = 0;
     $scope.state = "init";
 
-    // $rootScope.$watch("wise_ready", function(newv, oldv) {
-    // 	if (! newv)
-    // 	    return;
+    $rootScope.$watch("wise_ready", function(newv, oldv) {
+    	if (! newv)
+    	    return;
 
-    // 	$scope.state = "first-run";
-    // });
+    	$scope.state = "first-run";
+    });
 
-    // $scope.discover = function() {
-    // 	$scope.first_run = false;
-    // 	$scope.state = "discovering";
-    // 	$scope.progress = { max: 100, current: 10, iterations: 59 };
+    $scope.discover = function() {
+    	$scope.first_run = false;
+    	$scope.state = "discovering";
 
-    // 	var ticks = $interval(function() {
-    // 	    if ($scope.progress.current > $scope.progress.max) {
-    // 		$interval.cancel(ticks);
-    // 		return;
-    // 	    }
-    // 	    $scope.progress.current += 20;
-    // 	}, 1000, 5);
+	$scope.scan_counter++;
+	var timeout = Math.pow(2, $scope.scan_counter)
+    	$scope.progress = { max: timeout - 1, current: 0, iterations: 59 };
 
-    // 	$rootScope.manager.discover().then(on_success, logger.on_failure);
+    	var ticks = $interval(function() {
+    	    if ($scope.progress.current > $scope.progress.max) {
+    		$interval.cancel(ticks);
+    		return;
+    	    }
+    	    $scope.progress.current += 1;
+    	}, 1000, timeout);
 
-    // 	function on_success(devices) {
-    // 	    $interval.cancel(ticks);
-    // 	    $scope.devices = devices;
-    // 	    $scope.progress.current = $scope.progress.max;
-    // 	    $scope.state = devices.length == 0 ? "not-found": "found";
-    // 	    $scope.$apply();
-    // 	};
-    // };
+    	$rootScope.manager.discover(timeout)
+	    .then(on_success, on_error);
 
-    $scope.devices = [{"name":"MI","address":"00:11:22:33:44:55"}]
-    $scope.state = "found";
+    	function on_success(devices) {
+    	    $interval.cancel(ticks);
+    	    $scope.devices = devices;
+    	    $scope.progress.current = $scope.progress.max;
+    	    $scope.state = devices.length == 0 ? "not-found": "found";
+    	    $scope.$apply();
+    	};
 
+	function on_error(error) {
+	    $interval.cancel(ticks);
+	    $scope.state = "error";
+	    $scope.error = error;
+	};
+    };
 });

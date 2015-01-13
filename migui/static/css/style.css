@@ -48,3 +48,7 @@ html, body {
 .appear.ng-enter {
     -webkit-animation: fadeIn 0.5s;
 }
+
+.clickable {
+    cursor: pointer;
+}
