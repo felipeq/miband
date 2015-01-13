@@ -3,6 +3,7 @@
 # Copyright (C) 2014, Oscar Acena <oscar.acena@uclm.es>
 # This software is under the terms of GPLv3 or later.
 
+import time
 from datetime import datetime
 import struct
 import gattlib
@@ -19,6 +20,19 @@ HANDLE_TEST          = 0x2e
 HANDLE_USER_INFO     = 0x19
 HANDLE_CONTROL_POINT = 0x1b
 HANDLE_PAIR          = 0x33
+
+
+class Colors(object):
+    BLACK   = (0, 0, 0)
+    BLUE    = (0, 0, 6)
+    GREEN   = (0, 6, 0)
+    AQUA    = (0, 6, 6)
+    RED     = (6, 0, 0)
+    FUCHSIA = (6, 0, 6)
+    YELLOW  = (6, 6, 0)
+    GRAY    = (3, 3, 3)
+    WHITE   = (6, 6, 6)
+    ORANGE  = (6, 3, 0)
 
 
 class BatteryInfo(object):
@@ -92,21 +106,35 @@ class BandDevice(object):
         self.requester.write_by_handle(HANDLE_TEST, str(bytearray([2])))
 
     def pair(self):
-        # raise NotImplementedError(
-        # "Sorry, this is not yet available, I'm working on it :)")
         self.requester.write_by_handle(HANDLE_PAIR, str(bytearray([2])))
 
-    def setUserInfo(self, uid, gender, age, height, weight, type_, alias):
+        counter = 5
+        while counter:
+            time.sleep(0.1)
+            try:
+                data = self.requester.read_by_handle(HANDLE_PAIR)[0]
+            except RuntimeError:
+                continue
+
+            if ord(data[0]) == 0x2:
+                break
+            counter -= 1
+
+    def setUserInfo(self, uid, male, age, height, weight, type_, alias=None):
         seq = bytearray(20)
 
         seq[:4] = [ord(i) for i in struct.pack("<I", uid)]
-        seq[4] = bool(gender)
+        seq[4] = bool(male)
         seq[5] = age & 0xff
         seq[6] = height & 0xff
         seq[7] = weight & 0xff
         seq[8] = type_ & 0xff
 
-        assert len(alias) == 10, "Alias size must be 10"
+        if alias is None:
+            alias = str(uid)
+            alias = "0" * (10 - len(alias)) + alias
+
+        assert len(alias) == 10, "'alias' size must be 10 chars"
         seq[9:19] = alias
 
         addr = self.getAddress()

@@ -12,11 +12,16 @@ if __name__ == '__main__':
         print "Usage: {} <mac_address>".format(sys.argv[0])
         sys.exit(1)
 
+    print "Connectiing, please wait..."
     dev = BandDevice(sys.argv[1], "")
     dev.connect()
+
+    print "Pairing..."
     dev.pair()
 
-    time.sleep(10)
+    # NOTE: after locate, you must send the user info to your miband
+    dev.setUserInfo(uid=1, male=False, age=2, height=2, weight=2, type_=0)
+    time.sleep(5)
 
     print "changing colors..."
     colors = [(0, 0, 0),  # off

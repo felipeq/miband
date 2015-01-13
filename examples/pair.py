@@ -2,10 +2,8 @@
 # -*- mode: python; coding: utf-8 -*-
 
 import sys
-import time
 
 from mibanda import BandDevice
-
 
 if __name__ == '__main__':
     if len(sys.argv) < 2:
@@ -19,12 +17,4 @@ if __name__ == '__main__':
     print "Pairing..."
     dev.pair()
 
-    # NOTE: after locate, you must send the user info to your miband
-    dev.setUserInfo(uid=1, male=False, age=2, height=2, weight=2, type_=0)
-    time.sleep(5)
-
-    print "Sending locate...",
-    dev.locate()
-
-    time.sleep(2)
     print "OK"
