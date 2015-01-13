@@ -5,11 +5,27 @@ miguiApp.controller("ScanCtrl", function($rootScope, $scope, $interval) {
     $scope.scan_counter = 0;
     $scope.state = "init";
 
+    // debug
+    $scope.state = "found";
+    $scope.devices = [
+	{name: "MI", address: "88:0F:10:10:73:DA"},
+	// {name: "MI", address: "88:0F:10:10:73:DA"},
+	// {name: "MI", address: "88:0F:10:10:73:DA"},
+  	// {name: "MI", address: "88:0F:10:10:73:DA"},
+	// {name: "MI", address: "88:0F:10:10:73:DA"},
+	// {name: "MI", address: "88:0F:10:10:73:DA"},
+	// {name: "MI", address: "88:0F:10:10:73:DA"},
+	// {name: "MI", address: "88:0F:10:10:73:DA"},
+	// {name: "MI", address: "88:0F:10:10:73:DA"},
+	// {name: "MI", address: "88:0F:10:10:73:DA"},
+    ];
+
+
     $rootScope.$watch("wise_ready", function(newv, oldv) {
     	if (! newv)
     	    return;
 
-    	$scope.state = "first-run";
+    	// $scope.state = "first-run";
     });
 
     $scope.discover = function() {
@@ -38,6 +54,51 @@ miguiApp.controller("ScanCtrl", function($rootScope, $scope, $interval) {
     	    $scope.state = devices.length == 0 ? "not-found": "found";
     	    $scope.$apply();
     	};
+
+	function on_error(error) {
+	    $interval.cancel(ticks);
+	    $scope.state = "error";
+	    $scope.error = error;
+	};
+    };
+
+    $scope.pair = function(device) {
+	$scope.selected = device;
+	$scope.state = "pairing";
+    	$scope.progress = {
+	    max: 3,
+	    current: 0,
+	    iterations: 59,
+	    color: "#c00",
+	    bgcolor: "#eaeaea",
+	};
+
+	var cw = 1;
+    	var ticks = $interval(function() {
+	    var p = $scope.progress;
+	    if (p.current == p.max) {
+		cw = -1;
+		var c = $scope.progress.color;
+		$scope.progress.color = $scope.progress.bgcolor;
+		$scope.progress.bgcolor = c;
+	    }
+
+	    if (p.current == 0 && cw == -1) {
+		cw = 1;
+		var c = $scope.progress.color;
+		$scope.progress.color = $scope.progress.bgcolor;
+		$scope.progress.bgcolor = c;
+	    }
+
+	    p.current += cw;
+    	}, 1000, 60);
+
+    	$rootScope.manager.connect(device.address)
+	    .then(on_success, on_error);
+
+	function on_success() {
+	    $interval.cancel(ticks);
+	};
 
 	function on_error(error) {
 	    $interval.cancel(ticks);

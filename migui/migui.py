@@ -4,7 +4,30 @@
 import os
 import wise
 from subprocess import Popen
+from peewee import SqliteDatabase, Model, CharField, BooleanField, IntegerField
 import mibanda
+
+home = os.environ.get("HOME")
+db_path = os.path.join(home, "./config/migui.db")
+db = SqliteDatabase(db_path)
+
+
+class UserProfile(Model):
+    male = BooleanField()
+    age = IntegerField()
+    height = IntegerField()
+    weight = IntegerField()
+
+    class Meta:
+        database = db
+
+
+class DeviceProfile(Model):
+    device_address = CharField()
+    uid = IntegerField()
+
+    class Meta:
+        database = db
 
 
 class DeviceManager(object):
@@ -17,8 +40,18 @@ class DeviceManager(object):
             retval.append({'address': b.getAddress(), 'name': b.getName()})
         return retval
 
-    def connect(self, addr, current):
-        print "connect to {} called".format(addr)
+    def connect(self, address, current):
+        self.device = mibanda.BandDevice(address, "")
+        self.device.connect()
+        self.device.pair()
+
+        u, d = self.get_profiles(address)
+        self.device.setUserInfo(d.uid, u.male, u.age, u.height, u.weight, 0)
+
+    def get_profiles(self, address):
+        user = UserProfile.select()[0]
+        device = DeviceProfile(DeviceProfile.address == address)
+        return user, device
 
 
 class Backend(object):

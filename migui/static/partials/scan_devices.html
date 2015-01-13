@@ -1,9 +1,9 @@
 
 <div ng-controller="ScanCtrl" class="main fullscreen text-center">
 
-  <div ng-if="state == 'first-run'" class="well bounce-in-down">
-    <div class="headding" style="">Welcome! It's the first time?</div>
-    <div class="headding">No problem! Start by searching your device.</div>
+  <div ng-if="state == 'first-run'" class="bounce-in-down">
+    <div class="heading">Welcome! It's the first time?</div>
+    <div class="heading">No problem! Start by searching your device.</div>
 
     <button class="btn btn-primary btn-big" style="margin-top: 50px; margin-bottom: 20px"
 	    ng-click="discover()">
@@ -12,7 +12,7 @@
   </div>
 
   <div ng-if="state == 'discovering'" class="appear">
-    <div class="headding" style="position: relative; top: 120px; font-size: 1.7em">
+    <div class="heading" style="position: relative; top: 120px; font-size: 1.7em">
       Scanning...
     </div>
     <div round-progress
@@ -29,16 +29,55 @@
   </div>
 
   <div ng-if="state == 'not-found'" class="appear">
-    Not found!
+    <div class="heading">
+      MI Band <span style="color: #c00">not found!</span><br>
+      Please, make sure your band has enough battery.
+    </div>
+
+    <button class="btn btn-primary btn-big" style="margin-top: 50px; margin-bottom: 20px"
+	    ng-click="discover()">
+      Search again
+    </button>
   </div>
 
-  <div ng-if="state == 'found'" class="appear">
-    <div class="headding">
+  <div ng-if="state == 'found'" class="appear" style="height: 100%">
+    <div class="heading">
       I've found something!<br>
       Please, select your MI Band
     </div>
+    <br><br>
 
-    {{ devices }}
+    <div style="height: 60%; overflow: auto; margin-left: -20px; margin-right: -20px">
+      <div ng-repeat="d in devices">
+	<button style="width: 250px" class="btn btn-rounded-red"
+		ng-click="pair(d)">
+	  {{ d.address }}
+	</button><br><br>
+      </div>
+    </div>
+  </div>
+
+  <div ng-if="state == 'pairing'" class="appear">
+    <div class="heading">
+      Pairing with {{ selected.address }} ...<br>
+      Please, tap your band when it vibrates
+    </div>
+    <br>
+
+    <div class="heading" style="position: relative; top: 120px; font-size: 1.7em">
+      Pairing...
+    </div>
+    <div round-progress
+  	 max="progress.max"
+  	 current="progress.current"
+  	 color="{{ progress.color }}"
+  	 bgcolor="{{ progress.bgcolor }}"
+  	 radius="100"
+  	 stroke="8"
+  	 semi="false"
+  	 iterations="{{ progress.iterations }}"
+  	 animation="linearEase">
+    </div>
   </div>
 
   <div ng-if="state == 'error'" class="appear">
@@ -48,7 +87,7 @@
     </div>
 
     <br>
-    <a class="clickable"
+    <a style="color: #555" class="clickable"
        data-toggle="collapse"
        data-target="#error-details"
        aria-expanded="false"

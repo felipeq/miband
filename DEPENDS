@@ -1,2 +1,3 @@
-python-gattlib
+deb: python-gattlib
 
+pip: peewee
