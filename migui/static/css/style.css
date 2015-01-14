@@ -18,10 +18,26 @@ html, body {
     border: 1px solid #357ebd;
 }
 
+.text-danger {
+    color: #c00;
+}
+
+.text-dim {
+    color: #ddd;
+}
+
+.text-dim.clickable:hover {
+    color: #c00;
+}
+
 .heading {
     font-size: 1.4em;
     font-weight: bold;
     color: #888;
+}
+
+.btn-danger {
+    background-color: #c00;
 }
 
 .btn-big {
@@ -66,4 +82,11 @@ html, body {
 
 .clickable {
     cursor: pointer;
+}
+
+.slide-counter {
+    position: absolute;
+    top: 380px;
+    left: 180px;
+    font-size: 0.8em
 }

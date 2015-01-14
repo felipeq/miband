@@ -1,31 +1,68 @@
 // -*- mode: js; coding: utf-8 -*-
 
+miguiApp.controller("StartCtrl", function($rootScope, $scope, $location) {
+    $scope.state = "init";
+    $scope.steps = [1, 2, 3, 4];
+    $scope.current_step = 3;
+
+    $scope.byte_values = [];
+    var i;
+    for (i=0; i<255; i++)
+	$scope.byte_values.push(i);
+
+    $scope.user_info = {
+	male: false,
+	age: 20,
+	height: 170,
+	weight: 50,
+    };
+
+    $rootScope.$watch("wise_ready", function(newv, oldv) {
+    	if (! newv)
+    	    return;
+    	$scope.state = "step" + $scope.current_step;
+    });
+
+    $scope.set_gender = function(male) {
+	$scope.user_info.male = male;
+	$scope.current_step++;
+	$scope.state = "step2";
+    };
+
+    $scope.store_settings = function() {
+	_("STORE SETTINGS");
+    	$location.path("/discover/");
+    };
+
+    $scope.$watch("current_step", function(newv, oldv) {
+	if (newv != 5)
+	    return;
+	$scope.store_settings();
+    });
+
+    $scope.next_step = function() {
+	$scope.current_step++;
+	$scope.state = "step" + $scope.current_step;
+    };
+
+    $scope.prev_step = function() {
+	if ($scope.current_step <= 1)
+	    return;
+
+	$scope.current_step--;
+	$scope.state = "step" + $scope.current_step;
+    };
+});
+
 miguiApp.controller("ScanCtrl", function($rootScope, $scope, $interval) {
     $scope.devices = [];
     $scope.scan_counter = 0;
     $scope.state = "init";
 
-    // debug
-    $scope.state = "found";
-    $scope.devices = [
-	{name: "MI", address: "88:0F:10:10:73:DA"},
-	// {name: "MI", address: "88:0F:10:10:73:DA"},
-	// {name: "MI", address: "88:0F:10:10:73:DA"},
-  	// {name: "MI", address: "88:0F:10:10:73:DA"},
-	// {name: "MI", address: "88:0F:10:10:73:DA"},
-	// {name: "MI", address: "88:0F:10:10:73:DA"},
-	// {name: "MI", address: "88:0F:10:10:73:DA"},
-	// {name: "MI", address: "88:0F:10:10:73:DA"},
-	// {name: "MI", address: "88:0F:10:10:73:DA"},
-	// {name: "MI", address: "88:0F:10:10:73:DA"},
-    ];
-
-
     $rootScope.$watch("wise_ready", function(newv, oldv) {
     	if (! newv)
     	    return;
-
-    	// $scope.state = "first-run";
+    	$scope.state = "first-run";
     });
 
     $scope.discover = function() {

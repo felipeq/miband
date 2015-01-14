@@ -6,6 +6,9 @@ var miguiApp = angular.module(
 miguiApp.config(['$routeProvider', function($routeProvider) {
     $routeProvider
 	.when('/', {
+	    templateUrl: '/static/partials/start.html',
+	})
+	.when('/discover/', {
 	    templateUrl: '/static/partials/scan_devices.html',
 	});
 }]);

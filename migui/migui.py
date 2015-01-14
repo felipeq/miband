@@ -3,6 +3,7 @@
 
 import os
 import wise
+import random
 from subprocess import Popen
 from peewee import SqliteDatabase, Model, CharField, BooleanField, IntegerField
 import mibanda
@@ -45,13 +46,25 @@ class DeviceManager(object):
         self.device.connect()
         self.device.pair()
 
-        u, d = self.get_profiles(address)
-        self.device.setUserInfo(d.uid, u.male, u.age, u.height, u.weight, 0)
+        user = self.get_user_profile()
+        band = self.get_device_profiles(address)
+        self.device.setUserInfo(
+            band.uid, user.male, user.age, user.height, user.weight, 0)
 
-    def get_profiles(self, address):
-        user = UserProfile.select()[0]
-        device = DeviceProfile(DeviceProfile.address == address)
-        return user, device
+    def get_user_profile(self):
+        items = UserProfile.select()
+        if items.count() == 0:
+            raise RuntimeError("The user is not yet configured!")
+        return items[0]
+
+    def get_device_profile(self, address):
+        items = DeviceProfile.select(DeviceProfile.address == address)
+        if items.count() == 0:
+            uid = random.randrange(10, 2 ** 32 - 1)
+            profile = DeviceProfile(address=address, uid=uid)
+            profile.save()
+            return profile
+        return items[0]
 
 
 class Backend(object):
