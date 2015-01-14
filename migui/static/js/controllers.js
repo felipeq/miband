@@ -3,7 +3,7 @@
 miguiApp.controller("StartCtrl", function($rootScope, $scope, $location) {
     $scope.state = "init";
     $scope.steps = [1, 2, 3, 4];
-    $scope.current_step = 3;
+    $scope.current_step = 1;
 
     $scope.byte_values = [];
     var i;
