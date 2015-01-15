@@ -2,6 +2,7 @@
 # -*- mode: python; coding: utf-8 -*-
 
 import sys
+from datetime import datetime
 
 from mibanda import BandDevice
 
@@ -16,10 +17,12 @@ if __name__ == '__main__':
     dev.connect()
 
     binfo = dev.getBatteryInfo()
+    elapsed = (datetime.now() - binfo.last_charged).days
     print "BATTERY:"
-    print " - level:", binfo.level
+    print " - level: {}%".format(binfo.level)
     print " - last_charged:", binfo.last_charged
-    print " - charge_counter:", binfo.charge_counter
+    print " - charge_counter: {} times".format(binfo.charge_counter)
+    print " - elapsed: {} days".format(elapsed)
     print " - status:", binfo.status
 
     print "MAC:", dev.getAddress()
@@ -38,4 +41,3 @@ if __name__ == '__main__':
     devinfo = dev.getDeviceInfo()
     print "DEVICE INFO:"
     print " - firmware_version: ", devinfo.firmware_version
-

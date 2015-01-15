@@ -4,7 +4,7 @@
 import sys
 import time
 
-from mibanda import BandDevice
+from mibanda import BandDevice, HANDLE_CONTROL_POINT
 
 
 if __name__ == '__main__':
@@ -21,9 +21,12 @@ if __name__ == '__main__':
 
     # NOTE: after locate, you must send the user info to your miband
     dev.setUserInfo(uid=1, male=False, age=2, height=2, weight=2, type_=0)
-    time.sleep(5)
+    time.sleep(2)
 
-    print "Sending locate...",
-    dev.locate()
+    print "Sending notify..."
 
+    # middle led blue (2 secs), 10 vibrations (stops if tap)
+    dev.requester.write_by_handle(HANDLE_CONTROL_POINT, str(bytearray([8, 1])))
+
+    time.sleep(2)
     print "OK"
