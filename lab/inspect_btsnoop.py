@@ -52,8 +52,17 @@ HANDLE_CCC_PAIR = "0x0031"
 
 
 def handle_name(handle):
+    handle = tohex(handle)
+    if len(handle) < 6:
+        handle = "0x00" + handle[2:]
     names = dict([(v, k) for k, v in globals().items() if k.startswith("HANDLE_")])
     return names.get(handle, handle)
+
+
+def tohex(i):
+    if "0x" in i:
+        return i
+    return "0x{:02x}".format(int(i))
 
 
 if __name__ == '__main__':
@@ -68,11 +77,11 @@ if __name__ == '__main__':
 
         cmd = getattr(pkt, "bthci_cmd", None)
         if cmd is not None:
-            if cmd.opcode == CMD_CREATE_CONNECTION:
+            if tohex(cmd.opcode) == CMD_CREATE_CONNECTION:
                 print y("#### Create Connection ######")
                 continue
 
-            if cmd.opcode == CMD_DISCONNECT:
+            if tohex(cmd.opcode) == CMD_DISCONNECT:
                 print y("#### End Connection ######")
                 continue
 
@@ -85,46 +94,46 @@ if __name__ == '__main__':
 
         att = getattr(pkt, "btatt", None)
         if att is not None:
-            if att.opcode == OPCODE_ERROR_RESPONSE:
+            if tohex(att.opcode) == OPCODE_ERROR_RESPONSE:
                 continue
 
-            if att.opcode == OPCODE_FIND_INFORMATION_REQUEST:
+            if tohex(att.opcode) == OPCODE_FIND_INFORMATION_REQUEST:
                 continue
 
-            if att.opcode == OPCODE_FIND_INFORMATION_RESPONSE:
+            if tohex(att.opcode) == OPCODE_FIND_INFORMATION_RESPONSE:
                 continue
 
-            if att.opcode == OPCODE_READ_BY_TYPE_REQUEST:
+            if tohex(att.opcode) == OPCODE_READ_BY_TYPE_REQUEST:
                 continue
 
-            if att.opcode == OPCODE_READ_BY_TYPE_RESPONSE:
+            if tohex(att.opcode) == OPCODE_READ_BY_TYPE_RESPONSE:
                 continue
 
-            if att.opcode == OPCODE_READ_REQUEST:
+            if tohex(att.opcode) == OPCODE_READ_REQUEST:
                 name = handle_name(att.handle)
                 print g("r {}".format(name))
                 continue
 
-            if att.opcode == OPCODE_READ_RESPONSE:
+            if tohex(att.opcode) == OPCODE_READ_RESPONSE:
                 print "  -> {}".format(att.value)
                 continue
 
-            if att.opcode == OPCODE_READ_BY_GROUP_TYPE_REQUEST:
+            if tohex(att.opcode) == OPCODE_READ_BY_GROUP_TYPE_REQUEST:
                 continue
 
-            if att.opcode == OPCODE_READ_BY_GROUP_TYPE_RESPONSE:
+            if tohex(att.opcode) == OPCODE_READ_BY_GROUP_TYPE_RESPONSE:
                 continue
 
-            if att.opcode == OPCODE_WRITE_REQUEST:
+            if tohex(att.opcode) == OPCODE_WRITE_REQUEST:
                 name = handle_name(att.handle)
                 space = " " * (24 - len(name))
                 print r("w {} -> {}".format(name + space, att.value))
                 continue
 
-            if att.opcode == OPCODE_WRITE_RESPONSE:
+            if tohex(att.opcode) == OPCODE_WRITE_RESPONSE:
                 continue
 
-            if att.opcode == OPCODE_HANDLE_VALUE_NOTIFICATION:
+            if tohex(att.opcode) == OPCODE_HANDLE_VALUE_NOTIFICATION:
                 name = handle_name(att.handle)
                 space = " " * (24 - len(name))
                 print b("n {} -> {}".format(name + space, att.value))
@@ -133,6 +142,7 @@ if __name__ == '__main__':
                 continue
 
             print "Unknown operation code"
+            att.pretty_print()
             break
 
         acl = getattr(pkt, "bthci_acl", None)
