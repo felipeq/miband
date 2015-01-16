@@ -3,8 +3,9 @@
 
 import sys
 import time
+from hexdump import hexdump
 
-from mibanda import BandDevice, HANDLE_CONTROL_POINT
+from mibanda import BandDevice, HANDLE_DATE_TIME
 
 
 if __name__ == '__main__':
@@ -25,8 +26,17 @@ if __name__ == '__main__':
 
     print "Sending notify..."
 
-    # middle led blue (2 secs), 10 vibrations (stops if tap)
-    dev.requester.write_by_handle(HANDLE_CONTROL_POINT, str(bytearray([8, 1])))
+    req = dev.requester
+    data = [0x0e, 0x00, 0x0f, 0x11, 0x2c, 0x32,
+            0xff, 0xff, 0xff, 0xff, 0xff, 0xff]
+
+    hexdump("".join(map(chr, data)))
+    req.write_by_handle(HANDLE_DATE_TIME, str(bytearray(data)))
+    recv = req.read_by_handle(HANDLE_DATE_TIME)
+    hexdump("".join(recv))
+
+    # # middle led blue (2 secs), 10 vibrations (stops if tap)
+    # dev.requester.write_by_handle(HANDLE_CONTROL_POINT, str(bytearray([8, 1])))
 
     time.sleep(2)
     print "OK"

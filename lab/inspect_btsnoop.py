@@ -62,6 +62,8 @@ if __name__ == '__main__':
     cap = pyshark.FileCapture(sys.argv[1])
 
     for i, pkt in enumerate(cap):
+        print ("\r" * 4) + "{: 4}".format(i),
+
         cmd = getattr(pkt, "bthci_cmd", None)
         if cmd is not None:
             if cmd.opcode == CMD_CREATE_CONNECTION:
@@ -113,7 +115,7 @@ if __name__ == '__main__':
 
             if att.opcode == OPCODE_WRITE_REQUEST:
                 name = handle_name(att.handle)
-                space = " " * (25 - len(name))
+                space = " " * (24 - len(name))
                 print r("w {} -> {}".format(name + space, att.value))
                 continue
 
@@ -122,7 +124,7 @@ if __name__ == '__main__':
 
             if att.opcode == OPCODE_HANDLE_VALUE_NOTIFICATION:
                 name = handle_name(att.handle)
-                space = " " * (25 - len(name))
+                space = " " * (24 - len(name))
                 print b("n {} -> {}".format(name + space, att.value))
                 if name == att.handle:
                     break

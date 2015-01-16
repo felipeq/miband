@@ -15,11 +15,13 @@ UUID_USER_INFO     = "0000ff04-0000-1000-8000-00805f9b34fb"
 UUID_CONTROL_POINT = "0000ff05-0000-1000-8000-00805f9b34fb"
 UUID_STEPS         = "0000ff06-0000-1000-8000-00805f9b34fb"
 UUID_LE_PARAMS     = "0000ff09-0000-1000-8000-00805f9b34fb"
+UUID_DATE_TIME     = "0000ff0a-0000-1000-8000-00805f9b34fb"
 UUID_BATTERY       = "0000ff0c-0000-1000-8000-00805f9b34fb"
 
-HANDLE_TEST          = 0x2e
+HANDLE_DATE_TIME     = 0x27
 HANDLE_USER_INFO     = 0x19
 HANDLE_CONTROL_POINT = 0x1b
+HANDLE_TEST          = 0x2e
 HANDLE_PAIR          = 0x33
 
 
@@ -102,6 +104,35 @@ class BandDevice(object):
     def getLEParams(self):
         data = self.requester.read_by_uuid(UUID_LE_PARAMS)[0]
         return LEParams(data)
+
+    def setDateTime(self, dt=None):
+        if dt is None:
+            dt = datetime.now()
+
+        data = [(dt.year - 2000) & 0xff, dt.month - 1, dt.day,
+                dt.hour, dt.minute, dt.second]
+
+        self.requester.write_by_handle(HANDLE_DATE_TIME, str(bytearray(data)))
+
+    def getDateTime(self):
+        start = datetime.now()
+        self.setDateTime(start)
+
+        c = 4
+        try:
+            data = self.requester.read_by_uuid(UUID_DATE_TIME)[0]
+        except RuntimeError:
+            c -= 1
+            if not c:
+                raise
+            time.sleep(.2)
+
+        fields = map(ord, data)[6:]
+        device_dt = datetime(fields[0] + 2000, fields[1] + 1, *fields[2:])
+        elapsed = datetime.now() - start
+        self.setDateTime(device_dt + elapsed)
+
+        return device_dt
 
     def selfTest(self):
         self.requester.write_by_handle(HANDLE_TEST, str(bytearray([2])))
