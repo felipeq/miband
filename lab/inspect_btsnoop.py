@@ -46,6 +46,8 @@ HANDLE_DATE_TIME = "0x0027"
 HANDLE_STATISTICS = "0x0029"
 HANDLE_BATTERY = "0x002b"
 HANDLE_CCC_TEST = "0x002c"
+HANDLE_TEST = "0x002e"
+HANDLE_SENSOR_DATA = "0x0030"
 HANDLE_CCC_PAIR = "0x0031"
 
 
@@ -61,7 +63,7 @@ if __name__ == '__main__':
 
     cap = pyshark.FileCapture(sys.argv[1])
 
-    for i, pkt in enumerate(cap):
+    for i, pkt in enumerate(cap, 1):
         print ("\r" * 4) + "{: 4}".format(i),
 
         cmd = getattr(pkt, "bthci_cmd", None)
@@ -133,5 +135,11 @@ if __name__ == '__main__':
             print "Unknown operation code"
             break
 
+        acl = getattr(pkt, "bthci_acl", None)
+        if acl is not None:
+            # acl.pretty_print()
+            continue
+
         print "Unknown packet type"
+        pkt.pretty_print()
         break
