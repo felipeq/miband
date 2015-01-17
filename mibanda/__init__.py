@@ -196,6 +196,18 @@ class BandDevice(object):
         """ will stop the vibration mode, if running """
         self.requester.write_by_handle(HANDLE_CONTROL_POINT, h2s("13"))
 
+    def customVibration(self, times, on_time, off_time):
+        """ will vibrate 'times' times. Each iteration will start vibrator 'on_time'
+        milliseconds (up to 500, will be truncated if larger), and then stop it 'off_time'
+        milliseconds (no limit here)"""
+        on_time = min(500, on_time)
+
+        for i in range(times):
+            self.startVibration()
+            time.sleep(on_time / 1000.0)
+            self.stopVibration()
+            time.sleep(off_time / 1000.0)
+
     def locate(self):
         self.requester.write_by_handle(
             HANDLE_CONTROL_POINT, str(bytearray([0x08, 0x00])))
