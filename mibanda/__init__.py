@@ -25,6 +25,12 @@ HANDLE_TEST          = 0x2e
 HANDLE_PAIR          = 0x33
 
 
+def h2s(src):
+    """ hex to string: '02:1b' -> '\x02\x1b' """
+    data = map(lambda x: int(x, 16), src.split(":"))
+    return str(bytearray(data))
+
+
 class Colors(object):
     BLACK   = (0, 0, 0)
     BLUE    = (0, 0, 6)
@@ -180,6 +186,15 @@ class BandDevice(object):
         """ levels range from 1 (min bright) to 6 (max bright) """
         self.requester.write_by_handle(
             HANDLE_CONTROL_POINT, str(bytearray([0x0e, r, g, b, 0x01])))
+
+    def startVibration(self):
+        """ this will put the band in vibration mode up to 10 seconds,
+        or until you tap the band """
+        self.requester.write_by_handle(HANDLE_CONTROL_POINT, h2s("8:1"))
+
+    def stopVibration(self):
+        """ will stop the vibration mode, if running """
+        self.requester.write_by_handle(HANDLE_CONTROL_POINT, h2s("13"))
 
     def locate(self):
         self.requester.write_by_handle(
