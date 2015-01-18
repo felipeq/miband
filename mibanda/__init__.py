@@ -221,6 +221,10 @@ class BandDevice(object):
             self.stopVibration()
             time.sleep(off_time / 1000.0)
 
+    def setGoal(self, steps):
+        data = [0x05, 0x00, steps & 0xff, (steps >> 8) & 0xff]
+        self.requester.write_by_handle(HANDLE_CONTROL_POINT, h2s(data))
+
     def locate(self):
         self.requester.write_by_handle(
             HANDLE_CONTROL_POINT, str(bytearray([0x08, 0x00])))
