@@ -5,8 +5,11 @@ import sys
 from mibanda import DiscoveryService
 
 
+timeout = 5
+
+print "Starting discover for {} seconds...".format(timeout)
 ds = DiscoveryService()
-bands = ds.discover(5)
+bands = ds.discover(timeout)
 
 if not bands:
     print "No bands found!"

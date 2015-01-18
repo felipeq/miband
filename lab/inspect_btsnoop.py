@@ -49,6 +49,7 @@ HANDLE_CCC_TEST = "0x002c"
 HANDLE_TEST = "0x002e"
 HANDLE_SENSOR_DATA = "0x0030"
 HANDLE_CCC_PAIR = "0x0031"
+HANDLE_PAIR = "0x0033"
 
 
 def handle_name(handle):

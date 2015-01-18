@@ -34,13 +34,13 @@ if __name__ == '__main__':
     wait = timedelta(seconds=60)
     to = now + wait
 
-    seq = [
+    alarm1 = [
         0x04,        # 01: set_alarm opcode
         0x00,        # 02: alarm number (first)
         0x01,        # 03: enabled (true)
-        0x0f,        # 04: ?
-        0x00,        # 05: ?
-        0x11,        # 06: repeat (no, only once)
+        0x0f,        # 04: year (15 + 2000)
+        0x00,        # 05: month (starting from 0, january
+        0x11,        # 06: day of month
         to.hour,     # 07: hour
         to.minute,   # 08: minute
         0x00,        # 09: ? (seconds?)
@@ -48,10 +48,19 @@ if __name__ == '__main__':
         0x00,        # 11: repeat pattern (no repeat)
     ]
 
+    alarm2 = alarm1[:]
+    alarm2[1] = 0x01
+    alarm2[2] = 0x00
+
+    alarm3 = alarm2[:]
+    alarm3[1] = 0x02
+
     print now
     print to
 
-    req.write_by_handle(HANDLE_CONTROL_POINT, h2s(seq))
+    req.write_by_handle(HANDLE_CONTROL_POINT, h2s(alarm1))
+    req.write_by_handle(HANDLE_CONTROL_POINT, h2s(alarm2))
+    req.write_by_handle(HANDLE_CONTROL_POINT, h2s(alarm3))
 
-    time.sleep(2)
+    time.sleep(100)
     print "OK"
