@@ -5,7 +5,7 @@ import sys
 import time
 from datetime import datetime, timedelta
 
-from mibanda import BandDevice
+from mibanda import BandDevice, EVERYDAY
 
 
 if __name__ == '__main__':
@@ -24,43 +24,12 @@ if __name__ == '__main__':
     dev.setUserInfo(uid=1, male=False, age=2, height=2, weight=2, type_=0)
     time.sleep(1)
 
-    print "-" * 60
-    from mibanda import HANDLE_CONTROL_POINT, h2s
-    req = dev.requester
-
+    print "Setting alarm to run in a few seconds..."
+    timeout = 90
     now = datetime.now()
-    dev.setDateTime(now)
+    dev.setDateTime()
+    when = now + timedelta(seconds=timeout)
+    dev.setAlarm1(when, smart=False, repeat=EVERYDAY)
 
-    wait = timedelta(seconds=60)
-    to = now + wait
-
-    alarm1 = [
-        0x04,        # 01: set_alarm opcode
-        0x00,        # 02: alarm number (first)
-        0x01,        # 03: enabled (true)
-        0x0f,        # 04: year (15 + 2000)
-        0x00,        # 05: month (starting from 0, january
-        0x11,        # 06: day of month
-        to.hour,     # 07: hour
-        to.minute,   # 08: minute
-        0x00,        # 09: ? (seconds?)
-        0x00,        # 10: intelligent (no)
-        0x00,        # 11: repeat pattern (no repeat)
-    ]
-
-    alarm2 = alarm1[:]
-    alarm2[1] = 0x01
-    alarm2[2] = 0x00
-
-    alarm3 = alarm2[:]
-    alarm3[1] = 0x02
-
-    print now
-    print to
-
-    req.write_by_handle(HANDLE_CONTROL_POINT, h2s(alarm1))
-    req.write_by_handle(HANDLE_CONTROL_POINT, h2s(alarm2))
-    req.write_by_handle(HANDLE_CONTROL_POINT, h2s(alarm3))
-
-    time.sleep(100)
+    time.sleep(1)
     print "OK"

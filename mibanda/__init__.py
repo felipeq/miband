@@ -9,20 +9,40 @@ import struct
 import gattlib
 
 
-UUID_DEVICE_INFO   = "0000ff01-0000-1000-8000-00805f9b34fb"
-UUID_DEVICE_NAME   = "0000ff02-0000-1000-8000-00805f9b34fb"
-UUID_USER_INFO     = "0000ff04-0000-1000-8000-00805f9b34fb"
-UUID_CONTROL_POINT = "0000ff05-0000-1000-8000-00805f9b34fb"
-UUID_STEPS         = "0000ff06-0000-1000-8000-00805f9b34fb"
-UUID_LE_PARAMS     = "0000ff09-0000-1000-8000-00805f9b34fb"
-UUID_DATE_TIME     = "0000ff0a-0000-1000-8000-00805f9b34fb"
-UUID_BATTERY       = "0000ff0c-0000-1000-8000-00805f9b34fb"
+UUID_DEVICE_INFO    = "0000ff01-0000-1000-8000-00805f9b34fb"
+UUID_DEVICE_NAME    = "0000ff02-0000-1000-8000-00805f9b34fb"
+UUID_USER_INFO      = "0000ff04-0000-1000-8000-00805f9b34fb"
+UUID_CONTROL_POINT  = "0000ff05-0000-1000-8000-00805f9b34fb"
+UUID_STEPS          = "0000ff06-0000-1000-8000-00805f9b34fb"
+UUID_LE_PARAMS      = "0000ff09-0000-1000-8000-00805f9b34fb"
+UUID_DATE_TIME      = "0000ff0a-0000-1000-8000-00805f9b34fb"
+UUID_BATTERY        = "0000ff0c-0000-1000-8000-00805f9b34fb"
 
-HANDLE_DATE_TIME     = 0x27
-HANDLE_USER_INFO     = 0x19
-HANDLE_CONTROL_POINT = 0x1b
-HANDLE_TEST          = 0x2e
-HANDLE_PAIR          = 0x33
+HANDLE_DATE_TIME      = 0x27
+HANDLE_USER_INFO      = 0x19
+HANDLE_CONTROL_POINT  = 0x1b
+HANDLE_TEST           = 0x2e
+HANDLE_PAIR           = 0x33
+
+MONDAY     = 0b00000001
+TUESDAY    = 0b00000010
+WEDNESDAY  = 0b00000100
+THURSDAY   = 0b00001000
+FRIDAY     = 0b00010000
+SATURDAY   = 0b00100000
+SUNDAY     = 0b01000000
+EVERYDAY   = 0b01111111
+
+BLACK    = (0, 0, 0)
+BLUE     = (0, 0, 6)
+GREEN    = (0, 6, 0)
+AQUA     = (0, 6, 6)
+RED      = (6, 0, 0)
+FUCHSIA  = (6, 0, 6)
+YELLOW   = (6, 6, 0)
+GRAY     = (3, 3, 3)
+WHITE    = (6, 6, 6)
+ORANGE   = (6, 3, 0)
 
 
 def h2s(data):
@@ -30,19 +50,6 @@ def h2s(data):
     if isinstance(data, str):
         data = map(lambda x: int(x, 16), data.split(":"))
     return str(bytearray(data))
-
-
-class Colors(object):
-    BLACK   = (0, 0, 0)
-    BLUE    = (0, 0, 6)
-    GREEN   = (0, 6, 0)
-    AQUA    = (0, 6, 6)
-    RED     = (6, 0, 0)
-    FUCHSIA = (6, 0, 6)
-    YELLOW  = (6, 6, 0)
-    GRAY    = (3, 3, 3)
-    WHITE   = (6, 6, 6)
-    ORANGE  = (6, 3, 0)
 
 
 class BatteryInfo(object):
@@ -217,6 +224,38 @@ class BandDevice(object):
     def locate(self):
         self.requester.write_by_handle(
             HANDLE_CONTROL_POINT, str(bytearray([0x08, 0x00])))
+
+    def setAlarm1(self, when, smart=0, repeat=0):
+        self.setAlarm(1, 0, when, smart, repeat)
+
+    def setAlarm2(self, when, smart=0, repeat=0):
+        self.setAlarm(1, 1, when, smart, repeat)
+
+    def setAlarm3(self, when, smart=0, repeat=0):
+        self.setAlarm(1, 2, when, smart, repeat)
+
+    def clearAlarm1(self, when, smart=0, repeat=0):
+        self.setAlarm(1, 0, when, smart, repeat)
+
+    def clearAlarm2(self, when, smart=0, repeat=0):
+        self.setAlarm(1, 1, when, smart, repeat)
+
+    def clearAlarm3(self, when, smart=0, repeat=0):
+        self.setAlarm(1, 2, when, smart, repeat)
+
+    def setAlarm(self, enable, number, when, smart, repeat):
+        assert number in (0, 1, 2), "Invalid alarm id"
+        smart = 30 if smart != 0 else 0
+        repeat = min(EVERYDAY, repeat)
+        byteseq = [
+            0x04, number, enable,
+            (when.year - 2000) & 0xff, when.month - 1, when.day,
+            when.hour, when.minute, when.second,
+            smart, repeat,
+        ]
+
+        print "write:", byteseq
+        self.requester.write_by_handle(HANDLE_CONTROL_POINT, h2s(byteseq))
 
     def _getCRC8(self, data):
         crc = 0
