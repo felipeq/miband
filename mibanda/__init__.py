@@ -265,6 +265,14 @@ class BandDevice(object):
         print "write:", byteseq
         self.requester.write_by_handle(HANDLE_CONTROL_POINT, h2s(byteseq))
 
+    def enableRealTimeSteps(self):
+        data = [0x03, 0x01]
+        self.requester.write_by_handle(HANDLE_CONTROL_POINT, h2s(data))
+
+    def disableRealTimeSteps(self):
+        data = [0x03, 0x00]
+        self.requester.write_by_handle(HANDLE_CONTROL_POINT, h2s(data))
+
     def _getCRC8(self, data):
         crc = 0
         for i in range(0, len(data)):
