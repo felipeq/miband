@@ -25,9 +25,10 @@ HANDLE_TEST          = 0x2e
 HANDLE_PAIR          = 0x33
 
 
-def h2s(src):
+def h2s(data):
     """ hex to string: '02:1b' -> '\x02\x1b' """
-    data = map(lambda x: int(x, 16), src.split(":"))
+    if isinstance(data, str):
+        data = map(lambda x: int(x, 16), data.split(":"))
     return str(bytearray(data))
 
 
@@ -121,6 +122,11 @@ class BandDevice(object):
         self.requester.write_by_handle(HANDLE_DATE_TIME, str(bytearray(data)))
 
     def getDateTime(self):
+        """ get device date/time """
+
+        # Note: reading directly will not get response from device, or
+        # receives a malformed packet
+
         start = datetime.now()
         self.setDateTime(start)
 

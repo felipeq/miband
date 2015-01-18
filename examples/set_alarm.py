@@ -22,17 +22,36 @@ if __name__ == '__main__':
 
     # NOTE: after locate, you must send the user info to your miband
     dev.setUserInfo(uid=1, male=False, age=2, height=2, weight=2, type_=0)
+    time.sleep(1)
 
     print "-" * 60
     from mibanda import HANDLE_CONTROL_POINT, h2s
     req = dev.requester
 
-    dt = dev.getDateTime()
-    wait = timedelta(seconds=90)
+    now = datetime.now()
+    dev.setDateTime(now)
 
-    to = dt + wait
-    seq = "4:0:1:f:0:11:{:x}:{:x}:0:0:0".format(to.hour, to.minute)
-    print "4:0:1:f:0:11:{:x}:{:x}:0:0:0".format(to.hour, to.minute)
-    # req.write_by_handle(HANDLE_CONTROL_POINT, h2s(seq))
+    wait = timedelta(seconds=60)
+    to = now + wait
 
+    seq = [
+        0x04,        # 01: set_alarm opcode
+        0x00,        # 02: alarm number (first)
+        0x01,        # 03: enabled (true)
+        0x0f,        # 04: ?
+        0x00,        # 05: ?
+        0x11,        # 06: repeat (no, only once)
+        to.hour,     # 07: hour
+        to.minute,   # 08: minute
+        0x00,        # 09: ? (seconds?)
+        0x00,        # 10: intelligent (no)
+        0x00,        # 11: repeat pattern (no repeat)
+    ]
+
+    print now
+    print to
+
+    req.write_by_handle(HANDLE_CONTROL_POINT, h2s(seq))
+
+    time.sleep(2)
     print "OK"

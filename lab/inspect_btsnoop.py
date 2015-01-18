@@ -95,6 +95,7 @@ if __name__ == '__main__':
         att = getattr(pkt, "btatt", None)
         if att is not None:
             if tohex(att.opcode) == OPCODE_ERROR_RESPONSE:
+                # print "#### error response"
                 continue
 
             if tohex(att.opcode) == OPCODE_FIND_INFORMATION_REQUEST:
@@ -104,9 +105,12 @@ if __name__ == '__main__':
                 continue
 
             if tohex(att.opcode) == OPCODE_READ_BY_TYPE_REQUEST:
+                # print g("r uuid")
                 continue
 
             if tohex(att.opcode) == OPCODE_READ_BY_TYPE_RESPONSE:
+                # name = handle_name(att.handle)
+                # print "  {} -> {}".format(name, att.value)
                 continue
 
             if tohex(att.opcode) == OPCODE_READ_REQUEST:
