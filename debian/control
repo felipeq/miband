@@ -1,0 +1,15 @@
+Source: python-mibanda
+Section: python
+Priority: optional
+Maintainer: Oscar Aceña Herrera <oscaracena@gmail.com>
+Build-Depends: debhelper (>= 9.0.0), python-all
+Standards-Version: 3.9.6
+Homepage: https://bitbucket.org/OscarAcena/mibanda
+
+Package: python-mibanda
+Architecture: all
+Depends: ${shlibs:Depends}, ${misc:Depends}, python-gattlib
+Description: Python library to access the Xiaomi Mi Band
+ Xiaomi Mi Band is a smart bracelet that monitors your daily activity,
+ and your sleep. With this library you can set alarmas, use the
+ internal LEDs and the vibrator, read step information and more
