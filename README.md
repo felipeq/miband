@@ -55,7 +55,7 @@ documentation, or as in the examples.
 API Reference
 =============
 
-See the [mibanda API reference](http://oscaracena.bitbucket.org/mibanda/api/) 
+See the [mibanda API reference](http://oscaracena.bitbucket.org/mibanda/api/).
 
 References
 ==========
