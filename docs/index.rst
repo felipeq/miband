@@ -7,10 +7,7 @@
 Welcome to mibanda's documentation!
 ===================================
 
-Contents:
-
 This is the mibanda API reference.
-
 
 .. toctree::
    :maxdepth: 2
