@@ -9,18 +9,53 @@ for instructions of how to install it.
 **Note:** This software is tested using the 1.0.6.2 firmware version.
 It may not work on other versions. If so, please issue a bug.
 
-Using it
-========
+Installation
+============
 
-First, make sure that your Python binary could find the miband
-package. If you installed the Debian package, don't worry. Otherwise,
-set the PYTHONPATH to the proper location (i.e: this repo root
-dir). You can do so by:
+You could install this library using the provided Debian package,
+through the Python pip or manually.
+
+The Debian way
+--------------
+
+Just, add the following list to your file `/etc/sources.list`
+
+    deb http://babel.esi.uclm.es/arco sid main
+
+Then, update and install as always:
+
+    $ sudo apt-get update
+    $ sudo apt-get install python-mibanda
+
+The Python pip way
+------------------
+
+As usually, using the pip tool:
+
+    $ sudo pip install mibanda
+
+**NOTE**: this package depends on pygattlib, which in turn, depends on
+some C libraries. If you have any problem installing it, please try to
+install the pygattlib depends first (listed of a file called `DEPENDS`
+in the pygattlib source).
+
+The manual way
+--------------
+
+Just download this repository and extract (or clone) to a known
+location. Then make sure that your Python binary could find the miband
+package. You can set the `PYTHONPATH` to the proper location (i.e: this
+repo root dir) doing the following:
 
     miband$ . setenv.sh
 
 Now, just import the module `mibanda`, and use it according to the API
 documentation, or as in the examples.
+
+API Reference
+=============
+
+It is found the a file called API.md.
 
 References
 ==========

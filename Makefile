@@ -2,6 +2,10 @@
 
 all:
 
+doc:
+	pdoc mibanda > API.md
+
+
 .PHONY: clean
 clean:
 	find -name "*.pyc" -delete
