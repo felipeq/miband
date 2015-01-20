@@ -4,3 +4,5 @@ syntax: glob
 *~
 *.so
 *.o
+
+docs/_build

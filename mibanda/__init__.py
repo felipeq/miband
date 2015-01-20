@@ -120,6 +120,7 @@ class BandDevice(object):
 
     def getDeviceInfo(self):
         """Get device information: firmware version, etc.
+
         ::
 
           >>> info = device.getDeviceInfo()
@@ -171,6 +172,7 @@ class BandDevice(object):
         .. note:: This method requires the device to be configured
                   with UserInfo. Otherwise, it will raise an ``Application error:
                   I/O``. See :meth:`mibanda.BandDevice.setUserInfo` for more info.
+
         ::
 
           >>> from datetime import datetime
@@ -195,6 +197,7 @@ class BandDevice(object):
         .. note:: This method requires the device to be configured
                   with UserInfo. Otherwise, it will raise an ``Application error:
                   I/O``. See :meth:`mibanda.BandDevice.setUserInfo` for more info.
+
         ::
 
           >>> device.getDateTime()
@@ -225,6 +228,7 @@ class BandDevice(object):
         """Perform an internat test: it will vibrate and flash leds.
 
         .. warning:: This action will erase status information on your device.
+
         ::
 
           >>> device.selfTest()
@@ -314,6 +318,7 @@ class BandDevice(object):
         .. note:: This method requires the device to be configured
                   with UserInfo. Otherwise, it will raise an ``Application error:
                   I/O``. See :meth:`mibanda.BandDevice.setUserInfo` for more info.
+
         ::
 
           >>> # set red color
@@ -333,6 +338,7 @@ class BandDevice(object):
         .. note:: This method requires the device to be configured
                   with UserInfo. Otherwise, it will raise an ``Application error:
                   I/O``. See :meth:`mibanda.BandDevice.setUserInfo` for more info.
+
         ::
 
           >>> device.startVibration()
@@ -346,6 +352,7 @@ class BandDevice(object):
         .. note:: This method requires the device to be configured
                   with UserInfo. Otherwise, it will raise an ``Application error:
                   I/O``. See :meth:`mibanda.BandDevice.setUserInfo` for more info.
+
         ::
 
           >>> device.stopVibration()
@@ -362,6 +369,7 @@ class BandDevice(object):
         .. note:: This method requires the device to be configured
                   with UserInfo. Otherwise, it will raise an ``Application error:
                   I/O``. See :meth:`mibanda.BandDevice.setUserInfo` for more info.
+
         ::
 
           >>> # faster vibration (10 times)
@@ -389,6 +397,7 @@ class BandDevice(object):
         .. note:: This method requires the device to be configured
                   with UserInfo. Otherwise, it will raise an ``Application error:
                   I/O``. See :meth:`mibanda.BandDevice.setUserInfo` for more info.
+
         ::
 
           >>> device.setGoal(8000)
@@ -404,6 +413,7 @@ class BandDevice(object):
         .. note:: This method requires the device to be configured
                   with UserInfo. Otherwise, it will raise an ``Application error:
                   I/O``. See :meth:`mibanda.BandDevice.setUserInfo` for more info.
+
         ::
 
           >>> setCurrentSteps(0)
@@ -457,6 +467,7 @@ class BandDevice(object):
         .. note:: This method requires the device to be configured
                   with UserInfo. Otherwise, it will raise an ``Application error:
                   I/O``. See :meth:`mibanda.BandDevice.setUserInfo` for more info.
+
         ::
 
           >>> when = datetime.now() + timedelta(hours=8)
