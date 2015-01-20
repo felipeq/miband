@@ -32,7 +32,7 @@ References
 Disclaimer
 ==========
 
-This software my harm your device. Use it at your own risk.
+This software may harm your device. Use it at your own risk.
 
 THERE IS NO WARRANTY FOR THE PROGRAM, TO THE EXTENT PERMITTED BY
 APPLICABLE LAW. EXCEPT WHEN OTHERWISE STATED IN WRITING THE COPYRIGHT
