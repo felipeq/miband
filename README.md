@@ -55,7 +55,7 @@ documentation, or as in the examples.
 API Reference
 =============
 
-It is found the a file called API.md.
+See the [mibanda API reference](http://oscaracena.bitbucket.org/mibanda/api/) 
 
 References
 ==========
