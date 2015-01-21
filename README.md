@@ -1,7 +1,14 @@
 Index
 =======
 
-* [References](#references)
+* [Description](#markdown-header-description)
+* [Installation](#markdown-header-installation)
+    * [The Debian way](#markdown-header-the-debian-way)
+    * [The Python pip way](#markdown-header-the-python-pip-way)
+    * [The manual way](#markdown-header-the-manual-way)
+* [API Reference](#markdown-header-api-reference)
+* [References](#markdown-header-references)
+* [Disclaimer](#markdown-header-disclaimer)
 
 Description
 ===========
