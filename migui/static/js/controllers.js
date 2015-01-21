@@ -15,12 +15,32 @@ miguiApp.controller("StartCtrl", function($rootScope, $scope, $location) {
 	age: 20,
 	height: 170,
 	weight: 50,
+	default_band: null,
+    };
+
+    function on_error(error) {
+	$scope.state = "error";
+	$scope.error = error;
+	$scope.$apply();
     };
 
     $rootScope.$watch("wise_ready", function(newv, oldv) {
     	if (! newv)
     	    return;
-    	$scope.state = "step" + $scope.current_step;
+
+	$rootScope.manager.get_user_profile()
+	    .then(on_profile_found, on_profile_not_found);
+
+	function on_profile_found(profile) {
+	    $rootScope.user_profile = profile;
+    	    $location.path("/discover/");
+	    $scope.$apply();
+	};
+
+	function on_profile_not_found() {
+    	    $scope.state = "step" + $scope.current_step;
+	    $scope.$apply();
+	};
     });
 
     $scope.set_gender = function(male) {
@@ -30,13 +50,21 @@ miguiApp.controller("StartCtrl", function($rootScope, $scope, $location) {
     };
 
     $scope.store_settings = function() {
-	_("STORE SETTINGS");
-    	$location.path("/discover/");
+    	$rootScope.manager.set_user_profile($scope.user_info)
+	    .then(on_success, on_error);
+
+    	function on_success(devices) {
+	    $rootScope.new_user = true;
+	    $rootScope.user_profile = $scope.user_info;
+    	    $location.path("/discover/");
+	    $scope.$apply();
+	};
     };
 
     $scope.$watch("current_step", function(newv, oldv) {
 	if (newv != 5)
 	    return;
+
 	$scope.store_settings();
     });
 
@@ -56,13 +84,22 @@ miguiApp.controller("StartCtrl", function($rootScope, $scope, $location) {
 
 miguiApp.controller("ScanCtrl", function($rootScope, $scope, $interval) {
     $scope.devices = [];
-    $scope.scan_counter = 0;
+    $scope.scan_counter = 1;
+    $scope.uid = "some";
     $scope.state = "init";
 
     $rootScope.$watch("wise_ready", function(newv, oldv) {
     	if (! newv)
     	    return;
-    	$scope.state = "first-run";
+
+	// FIXME: if refresh here, reload user_profile
+
+	if (! $rootScope.user_profile.default_band) {
+	    $scope.state = "first-run";
+	    return;
+	}
+
+	_("HAS DEFAULT BAND");
     });
 
     $scope.discover = function() {
@@ -97,6 +134,14 @@ miguiApp.controller("ScanCtrl", function($rootScope, $scope, $interval) {
 	    $scope.state = "error";
 	    $scope.error = error;
 	};
+    };
+
+    $scope.select_device = function(device) {
+	$scope.state = "set-uid";
+    };
+
+    $scope.set_uid = function() {
+	_($scope.uid);
     };
 
     $scope.pair = function(device) {

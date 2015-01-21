@@ -2,7 +2,7 @@
 <div ng-controller="ScanCtrl" class="main fullscreen text-center">
 
   <div ng-if="state == 'first-run'" class="bounce-in-down">
-    <div class="heading">All right! I've stored your settings.</div>
+    <div ng-if="new_user" class="heading">All right! I've stored your settings.</div>
     <div class="heading">Now, you need to search your device.</div>
 
     <button class="btn btn-primary btn-big" style="margin-top: 50px; margin-bottom: 20px"
@@ -50,7 +50,7 @@
     <div style="height: 60%; overflow: auto; margin-left: -20px; margin-right: -20px">
       <div ng-repeat="d in devices">
 	<button style="width: 250px" class="btn btn-rounded-red"
-		ng-click="pair(d)">
+		ng-click="select_device(d)">
 	  {{ d.address }}
 	</button><br><br>
       </div>
@@ -80,6 +80,38 @@
     </div>
   </div>
 
+  <div ng-if="state == 'set-uid'" class="bounce-in-down">
+    <div class="heading">Oh, I almost forgot it!
+      Do you use the Mi Band with other apps?
+      Then, please give me your <span class="text-danger">UID<sup>*</sup></span>.</div>
+    <br><br><br><br>
+
+    <div style="width: 100%">
+      <div class="input-group" style="width: 300px; margin-left: auto; margin-right: auto">
+	<input class="form-control" type="text" style="font-size: 1.5em" size="10" autofocus
+	       ng-model="uid" />
+	<span class="input-group-btn">
+          <button class="btn btn-success" type="button"
+		  ng-click="set_uid()">
+	    <i class="fa fa-lg fa-check"></i>
+	  </button>
+	</span>
+      </div>
+    </div>
+
+    <br><br><br>
+    <div class="heading small">* This number is usually located on your user profile in the application.</div>
+    <div class="heading small">It is formed by 10 numbers or less, like 1583742980.</div>
+    <div class="heading small">If you don't use other apps, just ignore this.</div>
+
+    <div class="slide-counter">
+      <i ng-repeat="s in steps"
+	 class="fa fa-circle"
+	 ng-class="{'text-danger': current_step > $index, 'text-dim': current_step <= $index}"
+	 style="margin-top: 170px; margin-left: 10px; margin-right: 10px"></i>
+    </div>
+  </div>
+
   <div ng-if="state == 'error'" class="appear">
     <div><i class="fa fa-warning" style="font-size: 10em; color: #c00"></i></div>
     <div style="font-size: 2em; font-weight: bold; color: #555">
@@ -95,7 +127,7 @@
       See more info.
     </a>
     <div class="collapse" style="padding-top: 10px" id="error-details">
-      <b>{{ error.name}}:</b> {{ error.message }}
+      <b>{{ error.name }}:</b> {{ error.message }}
     </div>
 
   </div>

@@ -36,6 +36,10 @@ html, body {
     color: #888;
 }
 
+.heading.small {
+    font-size: 0.9em;
+}
+
 .btn-danger {
     background-color: #c00;
 }
@@ -87,6 +91,6 @@ html, body {
 .slide-counter {
     position: absolute;
     top: 380px;
-    left: 180px;
+    left: 177px;
     font-size: 0.8em
 }

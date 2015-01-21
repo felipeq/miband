@@ -9,7 +9,7 @@ from peewee import SqliteDatabase, Model, CharField, BooleanField, IntegerField
 import mibanda
 
 home = os.environ.get("HOME")
-db_path = os.path.join(home, "./config/migui.db")
+db_path = os.path.join(home, ".config/migui.db")
 db = SqliteDatabase(db_path)
 
 
@@ -18,6 +18,7 @@ class UserProfile(Model):
     age = IntegerField()
     height = IntegerField()
     weight = IntegerField()
+    default_band = CharField(null=True)
 
     class Meta:
         database = db
@@ -29,6 +30,9 @@ class DeviceProfile(Model):
 
     class Meta:
         database = db
+
+
+db.create_tables([UserProfile, DeviceProfile], safe=True)
 
 
 class DeviceManager(object):
@@ -51,11 +55,23 @@ class DeviceManager(object):
         self.device.setUserInfo(
             band.uid, user.male, user.age, user.height, user.weight, 0)
 
-    def get_user_profile(self):
+    def get_user_profile(self, current):
         items = UserProfile.select()
         if items.count() == 0:
             raise RuntimeError("The user is not yet configured!")
         return items[0]
+
+    def set_user_profile(self, info, current):
+        items = UserProfile.select()
+        if items.count() == 0:
+            items = [UserProfile()]
+
+        profile = items[0]
+        profile.male = info['male']
+        profile.age = int(info['age'])
+        profile.height = int(info['height'])
+        profile.weight = int(info['weight'])
+        profile.save()
 
     def get_device_profile(self, address):
         items = DeviceProfile.select(DeviceProfile.address == address)
