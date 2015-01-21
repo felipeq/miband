@@ -7,7 +7,7 @@ https://bitbucket.org/OscarAcena/pygattlib
 for instructions of how to install it.
 
 **Note:** This software is tested using the 1.0.6.2 firmware version.
-It may not work on other versions. If so, please issue a bug.
+It may not work on other versions. If does not work for you, please issue a bug.
 
 Installation
 ============
