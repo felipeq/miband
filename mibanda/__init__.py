@@ -3,6 +3,8 @@
 # Copyright (C) 2014, Oscar Acena <oscar.acena@uclm.es>
 # This software is under the terms of GPLv3 or later.
 
+from __future__ import print_function
+
 import time
 from datetime import datetime
 import struct
@@ -35,7 +37,7 @@ class DiscoveryService(object):
         """
 
         bands = []
-        for addr, name in self.service.discover(timeout).items():
+        for addr, name in list(self.service.discover(timeout).items()):
             band = BandDevice(addr, name)
             bands.append(band)
         return bands
@@ -57,7 +59,11 @@ class BandDevice(object):
         self.address = address
         self.name = name
 
-        self.requester = gattlib.GATTRequester(address, False)
+        class GATTRequester(gattlib.GATTRequester):
+            def on_notification(self, handle, data):
+                pass
+
+        self.requester = GATTRequester(address, False)
 
     def connect(self):
         """Used to create a connection with the Mi Band. It may take some
@@ -513,7 +519,7 @@ class BatteryInfo(object):
     """Holds the battery information for the Mi Band."""
 
     def __init__(self, data):
-        fields = map(ord, data)
+        fields = list(map(ord, data))
 
         #: Battery level (in percentage), ranges from 0 (discharged) to 100 (full).
         self.level = fields[0]
@@ -538,7 +544,7 @@ class LEParams(object):
     def __init__(self, data):
         """Holds the current Bluetooth LE connection params."""
 
-        fields = map(ord, data)
+        fields = list(map(ord, data))
 
         #: Minimum connection internal, in ms.
         self.minimum_connection_interval = fields[0] + (fields[1] << 8)
@@ -563,7 +569,7 @@ class DeviceInfo(object):
     def __init__(self, data):
         """Hols some assorted device information."""
 
-        fields = map(ord, data)
+        fields = list(map(ord, data))
 
         #: Current firmware version.
         self.firmware_version = "{}.{}.{}.{}".format(*reversed(fields[-4:]))
@@ -666,5 +672,5 @@ def h2s(data):
     """
 
     if isinstance(data, str):
-        data = map(lambda x: int(x, 16), data.split(":"))
+        data = [int(x, 16) for x in data.split(":")]
     return str(bytearray(data))
