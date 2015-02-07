@@ -80,6 +80,11 @@ class BandDevice(object):
 
         self.requester.connect(True)
 
+    def isConnected(self):
+        """Check if Mi Band is currently connected. Returns a bool value.
+        """
+        return self.requester.is_connected()
+
     def getAddress(self):
         """Get device's MAC address. Is the same value given at construction
         time. It's a fixed param. ::
