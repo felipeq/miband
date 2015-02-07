@@ -1,3 +1,9 @@
+python-mibanda (0.20150207-1) unstable; urgency=low
+
+  * New release
+
+ -- Oscar Aceña Herrera <oscaracena@gmail.com>  Sat, 07 Feb 2015 13:56:43 +0100
+
 python-mibanda (0.20150119-1) unstable; urgency=low
 
   * Initial release
