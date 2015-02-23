@@ -17,6 +17,10 @@ if __name__ == '__main__':
     dev = BandDevice(sys.argv[1], "")
     dev.connect()
 
+    devinfo = dev.getDeviceInfo()
+    print("DEVICE INFO:")
+    print(" - firmware_version: ", devinfo.firmware_version)
+
     binfo = dev.getBatteryInfo()
     elapsed = (datetime.now() - binfo.last_charged).days
     print("BATTERY:")
@@ -39,6 +43,3 @@ if __name__ == '__main__':
     print(" - connection_interval:", params.connection_interval)
     print(" - advertisement_interval:", params.advertisement_interval)
 
-    devinfo = dev.getDeviceInfo()
-    print("DEVICE INFO:")
-    print(" - firmware_version: ", devinfo.firmware_version)
