@@ -456,17 +456,17 @@ class BandDevice(object):
     def clearAlarm1(self, when, smart=0, repeat=0):
         """Clear the alarm 1, see :meth:`mibanda.BandDevice.setAlarm`
         for more info."""
-        self.setAlarm(1, 0, when, smart, repeat)
+        self.setAlarm(0, 0, when, smart, repeat)
 
     def clearAlarm2(self, when, smart=0, repeat=0):
         """Clear the alarm 2, see :meth:`mibanda.BandDevice.setAlarm`
         for more info."""
-        self.setAlarm(1, 1, when, smart, repeat)
+        self.setAlarm(0, 1, when, smart, repeat)
 
     def clearAlarm3(self, when, smart=0, repeat=0):
         """Clear the alarm 3, see :meth:`mibanda.BandDevice.setAlarm`
         for more info."""
-        self.setAlarm(1, 2, when, smart, repeat)
+        self.setAlarm(0, 2, when, smart, repeat)
 
     def setAlarm(self, enable, number, when, smart, repeat):
         """Enable or disable the alarm ``number`` to ``when`` (a
