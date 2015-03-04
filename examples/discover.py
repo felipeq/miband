@@ -6,6 +6,8 @@ from mibanda import DiscoveryService
 
 
 timeout = 5
+if len(sys.argv) > 1:
+    timeout = int(sys.argv[1])
 
 print "Starting discover for {} seconds...".format(timeout)
 ds = DiscoveryService()
